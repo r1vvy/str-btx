@@ -33,10 +33,6 @@ allprojects {
     }
 }
 
-subprojects {
-    apply(from = "${rootProject.projectDir}/gradle/dependencies.gradle.kts")
-}
-
 val uberJar by tasks.registering(Jar::class) {
     archiveClassifier.set("uber")
     from(subprojects.map { it.tasks.named<Jar>("jar").flatMap { it.archiveFile } })
