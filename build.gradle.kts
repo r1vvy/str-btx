@@ -4,6 +4,7 @@ plugins {
     id("java")
     id("idea")
     id("checkstyle")
+    id("jacoco")
 }
 
 idea {
@@ -21,6 +22,12 @@ allprojects {
         mavenCentral()
     }
 
+    checkstyle {
+        toolVersion = "10.13.0" // Adjust this to match your Checkstyle version
+        config = resources.text.fromFile("config/checkstyle/checkstyle.xml")
+    }
+
+    // for checkstyle
     configurations.all {
         exclude(group = "com.google.collections", module = "google-collections")
     }
@@ -28,11 +35,6 @@ allprojects {
 
 subprojects {
     apply(from = "${rootProject.projectDir}/gradle/dependencies.gradle.kts")
-
-    checkstyle {
-        toolVersion = "10.13.0" // Adjust this to match your Checkstyle version
-        config = resources.text.fromFile("config/checkstyle/checkstyle.xml")
-    }
 }
 
 val uberJar by tasks.registering(Jar::class) {
@@ -41,6 +43,22 @@ val uberJar by tasks.registering(Jar::class) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+tasks.named("build").configure {
+    dependsOn(tasks.jacocoTestReport)
+}
+
 tasks.named("assemble").configure {
     dependsOn(uberJar)
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn("test")
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
