@@ -3,8 +3,9 @@ import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
 plugins {
     id("java")
     id("idea")
-    id("checkstyle")
+//    id("checkstyle")
     id("jacoco")
+    id("org.springframework.boot") version "3.2.2" apply false
 }
 
 idea {
@@ -15,16 +16,11 @@ idea {
 
 allprojects {
     apply(plugin = "java")
-    apply(plugin = "checkstyle")
+//    apply(plugin = "checkstyle")
     version = "1.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
-    }
-
-    checkstyle {
-        toolVersion = "10.13.0" // Adjust this to match your Checkstyle version
-        config = resources.text.fromFile("config/checkstyle/checkstyle.xml")
     }
 
     // for checkstyle
@@ -32,6 +28,11 @@ allprojects {
         exclude(group = "com.google.collections", module = "google-collections")
     }
 }
+
+//checkstyle {
+//    toolVersion = "10.13.0"
+//    config = resources.text.fromFile("/config/checkstyle/checkstyle.xml")
+//}
 
 val uberJar by tasks.registering(Jar::class) {
     archiveClassifier.set("uber")
