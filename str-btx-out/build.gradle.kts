@@ -4,5 +4,5 @@ dependencies {
 
     implementation(libs.reactor.core)
     implementation(libs.spring.boot.starter.webflux)
-    implementation(project(":str-btx-commons"))
+    implementation(project(":str-btx-core"))
 }
