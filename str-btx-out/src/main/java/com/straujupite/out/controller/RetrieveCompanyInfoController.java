@@ -1,6 +1,7 @@
 package com.straujupite.out.controller;
 
 
+import com.straujupite.commons.dto.GetCompanyInResponse;
 import com.straujupite.core.service.CompanyInfoService;
 import com.straujupite.out.config.PathConfigurations;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class RetrieveCompanyInfoController {
     private final CompanyInfoService companyInfoService;
 
     @GetMapping
-    public Mono<Object> retrieveCompanyInfo(String phoneNumber){
+    public Mono<GetCompanyInResponse> retrieveCompanyInfo(String phoneNumber){
         return companyInfoService.retrieveCompanyByPhoneNumber(phoneNumber);
     }
 }
