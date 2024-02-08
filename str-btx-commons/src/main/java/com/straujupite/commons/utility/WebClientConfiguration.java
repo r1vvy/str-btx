@@ -1,4 +1,4 @@
-package com.straujupite.commons;
+package com.straujupite.commons.utility;
 
 
 import lombok.RequiredArgsConstructor;
