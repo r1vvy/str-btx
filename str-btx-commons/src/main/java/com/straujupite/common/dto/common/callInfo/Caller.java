@@ -1,17 +1,15 @@
 package com.straujupite.common.dto.common.callInfo;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-@AllArgsConstructor(onConstructor_ = {@JsonCreator})
+@Data
+@Builder
 public class Caller {
 
-  @JsonValue
   @JsonAlias({"callerid", "caller"})
   @NotBlank
   private final String number;
-
 }

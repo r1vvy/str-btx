@@ -1,9 +1,9 @@
 package com.straujupite.common.dto.common.callInfo;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
-@RequiredArgsConstructor
+@Getter
 public enum CallDirection {
   OUT("out"),
   IN("in");
@@ -15,4 +15,7 @@ public enum CallDirection {
     return direction;
   }
 
+  CallDirection(String direction) {
+    this.direction = direction;
+  }
 }

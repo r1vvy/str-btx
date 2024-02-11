@@ -3,9 +3,9 @@ package com.straujupite.common.dto.common.callInfo;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@RequiredArgsConstructor
+@Data
 @Builder
 public class CallInfo {
 
