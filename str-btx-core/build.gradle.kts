@@ -5,4 +5,6 @@ dependencies {
     implementation(libs.spring.context)
     implementation(libs.slf4j.api)
     implementation(libs.reactor.core)
+
+    implementation(project(":str-btx-commons"))
 }
