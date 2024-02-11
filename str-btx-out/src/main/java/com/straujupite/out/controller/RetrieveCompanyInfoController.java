@@ -18,7 +18,7 @@ public class RetrieveCompanyInfoController {
     private final CompanyInfoService companyInfoService;
 
     @GetMapping
-    public Mono<GetCompanyInResponse> retrieveCompanyInfo(String phoneNumber){
+    public GetCompanyInResponse retrieveCompanyInfo(String phoneNumber){
         return companyInfoService.retrieveCompanyByPhoneNumber(phoneNumber);
     }
 }
