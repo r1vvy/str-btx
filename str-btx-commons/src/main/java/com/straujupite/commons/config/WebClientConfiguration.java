@@ -1,4 +1,4 @@
-package com.straujupite.commons.utility;
+package com.straujupite.commons.config;
 
 
 import lombok.RequiredArgsConstructor;
@@ -8,10 +8,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 @RequiredArgsConstructor
 public class WebClientConfiguration {
-    
+
     private final WebClient.Builder webClientBuilder;
+    private static final String WEB_CLIENT_URL = PathConfiguration.WEB_CLIENT_URL;
 
     public WebClient webClient(){
-        return webClientBuilder.baseUrl("https://straujupte.bitrix24.eu/rest/24/cf6tkfj4yja3spsr/").build();
+        return webClientBuilder.baseUrl(WEB_CLIENT_URL).build();
     }
 }
