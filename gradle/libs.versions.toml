@@ -12,15 +12,18 @@ validation = "3.0.2"
 slf4jApi = "2.0.9"
 logback = "1.4.14"
 googleCloudLogging = "3.15.16"
+hibernate = "8.0.0.Final"
 
 [libraries]
 reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springBoot" }
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "springBoot" }
 spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "springBoot" }
 spring-context = { module = "org.springframework:spring-context", version.ref = "springFramework" }
+hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
