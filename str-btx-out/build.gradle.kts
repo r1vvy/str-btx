@@ -2,10 +2,13 @@ dependencies {
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
 
+    implementation(project(":str-btx-commons"))
+
     implementation(libs.reactor.core)
     implementation(libs.spring.boot.starter.webflux)
-    implementation(libs.junit)
-    implementation(libs.mockito.core)
-    implementation(libs.reactor.test)
-    implementation(project(":str-btx-commons"))
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.reactor.test)
+
 }

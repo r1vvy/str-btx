@@ -1,4 +1,4 @@
-package com.straujupite.commons.config;
+package com.straujupite.common.config;
 
 public interface PathConfiguration {
 

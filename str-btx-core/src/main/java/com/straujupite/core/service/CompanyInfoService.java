@@ -1,6 +1,6 @@
 package com.straujupite.core.service;
 
-import com.straujupite.commons.dto.GetCompanyInResponse;
+import com.straujupite.common.dto.GetCompanyInResponse;
 import com.straujupite.out.adapter.RetrieveCompanyInfoAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ public class CompanyInfoService {
 
     private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
 
-    public Mono<GetCompanyInResponse> retrieveCompanyByPhoneNumber(String phoneNumber){
+    public Mono<GetCompanyInResponse> retrieveCompanyByPhoneNumber(String phoneNumber) {
         return retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber(phoneNumber);
     }
 }
