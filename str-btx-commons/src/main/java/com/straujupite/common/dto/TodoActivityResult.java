@@ -6,18 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Result {
+public class TodoActivityResult {
 
-    @JsonProperty("COMPANY")
-    private List<Integer> company;
-
-
+    @JsonProperty("id")
+    public Integer activityID;
 }
-
-
