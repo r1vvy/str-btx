@@ -1,19 +1,14 @@
 package com.straujupite.out.adapter;
 
 
-import com.straujupite.common.config.PathConfiguration;
 import com.straujupite.common.config.WebClientConfiguration;
 
 import com.straujupite.common.dto.GetCompanyInResponse;
-import com.straujupite.common.dto.Result;
+import com.straujupite.common.dto.GetCompanyResult;
 import com.straujupite.common.error.BitrixError;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.util.CollectionUtils;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -48,7 +43,7 @@ public class RetrieveCompanyInfoTest {
     }
 
     public GetCompanyInResponse getCompanyInResponse(){
-        return GetCompanyInResponse.builder().result(Result.builder().company(new ArrayList<>(Arrays.asList(2930))).build()).build();
+        return GetCompanyInResponse.builder().result(GetCompanyResult.builder().company(new ArrayList<>(Arrays.asList(2930))).build()).build();
 
     }
 }
