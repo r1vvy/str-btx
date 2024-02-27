@@ -5,6 +5,7 @@ import com.straujupite.common.dto.GetActivityIdInResponse;
 import com.straujupite.common.error.BitrixError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.codec.DecodingException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -22,7 +23,13 @@ public class AddTodoActivityAdapter {
         return webClient.webClient().get()
                 .uri(String.format(URI, companyID, deadline, description))
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
+                .onStatus(HttpStatusCode::is4xxClientError, response ->{
+                    if (response.statusCode().equals(HttpStatus.BAD_REQUEST)){
+                        return Mono.error(new BitrixError("Wrong parameters"));
+                    } else{
+                        return Mono.error(new BitrixError("Could not establish connection with Bitrix"));
+                    }
+                })
                 .bodyToMono(GetActivityIdInResponse.class)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof DecodingException) {
