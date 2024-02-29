@@ -12,7 +12,7 @@ public class AddTodoActivityService {
 
     private final AddTodoActivityAdapter addTodoActivityAdapter;
 
-    public Mono<GetActivityIdInResponse> addTodoActivity(Integer companyID, String deadline, String description) {
+    public Mono<Void> addTodoActivity(Integer companyID, String deadline, String description) {
         return addTodoActivityAdapter.addTodoActivity(companyID, deadline, description);
     }
 }
