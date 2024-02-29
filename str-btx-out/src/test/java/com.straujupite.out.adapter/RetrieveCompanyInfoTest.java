@@ -5,7 +5,7 @@ import com.straujupite.common.config.WebClientConfiguration;
 
 import com.straujupite.common.dto.GetCompanyInResponse;
 import com.straujupite.common.dto.GetCompanyResult;
-import com.straujupite.common.error.BitrixError;
+import com.straujupite.common.error.BitrixRuntimeError;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -36,7 +36,7 @@ public class RetrieveCompanyInfoTest {
     @Test
     public void retrieveCompanyWithWrongNumber() {
         StepVerifier.create(retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("1234567890"))
-                .expectErrorMatches(throwable -> throwable instanceof BitrixError &&
+                .expectErrorMatches(throwable -> throwable instanceof BitrixRuntimeError &&
                         throwable.getMessage().equals("Company ID not found"))
                 .verify();
 
