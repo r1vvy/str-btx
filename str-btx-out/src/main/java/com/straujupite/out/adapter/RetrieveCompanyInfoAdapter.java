@@ -2,7 +2,7 @@ package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.GetCompanyInResponse;
 import com.straujupite.common.config.WebClientConfiguration;
-import com.straujupite.common.error.BitrixError;
+import com.straujupite.common.error.BitrixRuntimeError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatusCode;
@@ -21,11 +21,11 @@ public class RetrieveCompanyInfoAdapter {
                 .uri(URI + phoneNumber)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
+                .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(new BitrixRuntimeError("Could not establish connection with Bitrix")))
                 .bodyToMono(GetCompanyInResponse.class)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof DecodingException) {
-                        return new BitrixError("Company ID not found");
+                        return new BitrixRuntimeError("Company ID not found");
                     }
                     return throwable;
                 });

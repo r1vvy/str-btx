@@ -1,6 +1,6 @@
 package com.straujupite.core.service;
 
-import com.straujupite.common.dto.GetActivityIdInResponse;
+import com.straujupite.common.dto.ActivityToDo;
 import com.straujupite.out.adapter.AddTodoActivityAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ public class AddTodoActivityService {
 
     private final AddTodoActivityAdapter addTodoActivityAdapter;
 
-    public Mono<Void> addTodoActivity(Integer companyID, String deadline, String description) {
-        return addTodoActivityAdapter.addTodoActivity(companyID, deadline, description);
+    public Mono<Void> addTodoActivity(ActivityToDo activityToDo) {
+        return addTodoActivityAdapter.addTodoActivity(activityToDo.companyID(), activityToDo.deadline(), activityToDo.description());
     }
 }

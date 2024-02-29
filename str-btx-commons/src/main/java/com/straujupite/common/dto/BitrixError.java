@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class BitrixJsonError {
+public class BitrixError {
 
     @JsonProperty("error")
     private String error;

@@ -1,12 +1,11 @@
 package com.straujupite.out.adapter;
 
 import com.straujupite.common.config.WebClientConfiguration;
-import com.straujupite.common.dto.BitrixJsonError;
+import com.straujupite.common.dto.BitrixError;
 import com.straujupite.common.dto.GetActivityIdInResponse;
-import com.straujupite.common.error.BitrixError;
+import com.straujupite.common.error.BitrixRuntimeError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.codec.DecodingException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -27,18 +26,13 @@ public class AddTodoActivityAdapter {
                 .uri(String.format(URI, companyID, deadline, description))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response ->{
-                    if (response.statusCode().equals(HttpStatus.BAD_REQUEST)){
-                        return response.bodyToMono(BitrixJsonError.class)
-                                .flatMap(error -> Mono.error(new BitrixError(error.getErrorDescription())));
-                    } else{
-                        return Mono.error(new BitrixError("Could not establish connection with Bitrix"));
-                    }
-                })
+                .onStatus(HttpStatusCode::is4xxClientError, response ->
+                        response.bodyToMono(BitrixError.class)
+                                .flatMap(error -> Mono.error(new BitrixRuntimeError(error.getErrorDescription()))))
                 .bodyToMono(GetActivityIdInResponse.class)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof DecodingException) {
-                        return new BitrixError("Failed to add activity");
+                        return new BitrixRuntimeError("Failed to add activity");
                     }
                     return throwable;
                 })
