@@ -1,6 +1,7 @@
 package com.straujupite.out.adapter;
 
 import com.straujupite.common.config.WebClientConfiguration;
+import com.straujupite.common.dto.ActivityToDo;
 import com.straujupite.common.dto.BitrixError;
 import com.straujupite.common.dto.GetActivityIdInResponse;
 import com.straujupite.common.error.BitrixRuntimeError;
@@ -19,11 +20,11 @@ public class AddTodoActivityAdapter {
 
     private static final String URI = "crm.activity.todo.add?ownerTypeId=4&ownerId=%d&deadline=%s&description=%s";
 
-    public Mono<Void> addTodoActivity(Integer companyID, String deadline, String description) {
+    public Mono<Void> addTodoActivity(ActivityToDo activityToDo) {
 
         //deadline format: "YYYY-MM-DDThh:mm:ss" ex: "2024-12-31T15:00:00"
         return webClient.webClient().get()
-                .uri(String.format(URI, companyID, deadline, description))
+                .uri(String.format(URI, activityToDo.companyID(), activityToDo.deadline(), activityToDo.description()))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, response ->

@@ -13,6 +13,6 @@ public class AddTodoActivityService {
     private final AddTodoActivityAdapter addTodoActivityAdapter;
 
     public Mono<Void> addTodoActivity(ActivityToDo activityToDo) {
-        return addTodoActivityAdapter.addTodoActivity(activityToDo.companyID(), activityToDo.deadline(), activityToDo.description());
+        return addTodoActivityAdapter.addTodoActivity(activityToDo);
     }
 }
