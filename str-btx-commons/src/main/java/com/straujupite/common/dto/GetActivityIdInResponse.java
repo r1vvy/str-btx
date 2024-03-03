@@ -1,23 +1,16 @@
 package com.straujupite.common.dto;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class GetCompanyInResponse{
+@AllArgsConstructor
+public class GetActivityIdInResponse {
 
-    private GetCompanyResult result;
+    private TodoActivityResult result;
 }
-
-
-
-
-
-
