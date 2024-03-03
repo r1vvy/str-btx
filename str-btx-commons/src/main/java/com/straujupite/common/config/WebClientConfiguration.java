@@ -2,16 +2,36 @@ package com.straujupite.common.config;
 
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
+import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebClientConfiguration {
-    private static final String WEB_CLIENT_URL = PathConfiguration.WEB_CLIENT_URL;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Value("${path.web-client-url}")
+    private String url;
 
     @Bean
-    public WebClient webClient(){return WebClient.builder().baseUrl(WEB_CLIENT_URL).build();}
+    public WebClient webClient(){
+        return WebClient.builder()
+                        .baseUrl(url)
+                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .codecs(configurer -> configurer.defaultCodecs()
+                                                        .jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper)))
+                        .codecs(configurer -> configurer.defaultCodecs()
+                                                        .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper)))
+                        .build();
+    }
 }
