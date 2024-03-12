@@ -17,19 +17,19 @@ public class RetrieveCompanyInfoAdapter {
 
   private final WebClient webClient;
 
-  public Mono<GetCompanyInResponse> retrieveCompanyByPhoneNumber(String phoneNumber){
+  public Mono<GetCompanyInResponse> retrieveCompanyByPhoneNumber(String phoneNumber) {
     return webClient.get()
-                    .uri(URI + phoneNumber)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
-                    .bodyToMono(GetCompanyInResponse.class)
-                    .onErrorMap(throwable -> {
-                      if (throwable instanceof DecodingException) {
-                        return new BitrixError("Company ID not found");
-                      }
-                      return throwable;
-                    });
+        .uri(URI + phoneNumber)
+        .retrieve()
+        .onStatus(HttpStatusCode::is4xxClientError,
+            error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
+        .bodyToMono(GetCompanyInResponse.class)
+        .onErrorMap(throwable -> {
+          if (throwable instanceof DecodingException) {
+            return new BitrixError("Company ID not found");
+          }
+          return throwable;
+        });
 
-    }
+  }
 }
