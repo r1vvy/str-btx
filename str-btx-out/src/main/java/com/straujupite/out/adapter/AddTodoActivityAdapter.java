@@ -9,25 +9,25 @@ import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
 public class AddTodoActivityAdapter {
 
-    private final WebClientConfiguration webClient;
+    private final WebClient webClient;
 
     private static final String URI = "crm.activity.todo.add?ownerTypeId=4&ownerId=%d&deadline=%s&description=%s";
 
     public Mono<Void> addTodoActivity(ActivityToDo activityToDo) {
 
-        //deadline format: "YYYY-MM-DDThh:mm:ss" ex: "2024-12-31T15:00:00"
-        return webClient.webClient().get()
+        // deadline format: "YYYY-MM-DDThh:mm:ss" ex: "2024-12-31T15:00:00"
+        return webClient.get()
                 .uri(String.format(URI, activityToDo.companyID(), activityToDo.deadline(), activityToDo.description()))
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response ->
-                        response.bodyToMono(com.straujupite.common.dto.BitrixError.class)
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        response -> response.bodyToMono(com.straujupite.common.dto.BitrixError.class)
                                 .flatMap(error -> Mono.error(new BitrixError(error.getErrorDescription()))))
                 .bodyToMono(GetActivityIdInResponse.class)
                 .onErrorMap(throwable -> {
