@@ -5,7 +5,10 @@ import lombok.Getter;
 @Getter
 public enum EntityType {
 
-  COMPANY("company");
+  COMPANY("company"),
+  LEAD("lead"),
+  DEAL("deal"),
+  ORDER("order");
 
   private final String entityType;
 

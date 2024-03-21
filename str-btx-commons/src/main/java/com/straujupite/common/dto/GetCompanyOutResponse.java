@@ -1,6 +1,8 @@
 package com.straujupite.common.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetCompanyInResponse{
+public class GetCompanyOutResponse {
 
-    private GetCompanyResult result;
+    @JsonProperty("COMPANY")
+    private List<Integer> companies;
 }
 
 

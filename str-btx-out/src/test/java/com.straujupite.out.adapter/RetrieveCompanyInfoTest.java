@@ -1,10 +1,5 @@
 package com.straujupite.out.adapter;
 
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.reactive.function.client.WebClient;
 
 //@RunWith(MockitoJUnitRunner.class)
 public class RetrieveCompanyInfoTest {
