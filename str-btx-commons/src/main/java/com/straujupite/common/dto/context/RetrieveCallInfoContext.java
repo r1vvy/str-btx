@@ -13,6 +13,8 @@ public class RetrieveCallInfoContext {
 
   private final String companyPhoneNumber;
 
+  private final String strNumber;
+
   private final Integer companyId;
 
 }
