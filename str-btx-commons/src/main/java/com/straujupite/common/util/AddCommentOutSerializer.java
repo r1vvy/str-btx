@@ -26,7 +26,7 @@ public class AddCommentOutSerializer extends StdSerializer<AddCommentOutCommand>
 
     jsonGenerator.writeNumberField("ENTITY_ID", addCommentOutCommand.getEntityId());
     jsonGenerator.writeStringField("ENTITY_TYPE", addCommentOutCommand.getEntityType().toString());
-    jsonGenerator.writeStringField("COMMENT", addCommentOutCommand.getComment());
+    jsonGenerator.writeStringField("COMMENT", addCommentOutCommand.getComment().getValue());
 
     jsonGenerator.writeEndObject();
     jsonGenerator.writeEndObject();
