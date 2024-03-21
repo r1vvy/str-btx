@@ -1,13 +1,16 @@
 package com.straujupite.core.service;
 
-import org.springframework.stereotype.Component;
+import com.straujupite.common.dto.context.RetrieveCallInfoContext;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class CallInfoService {
 
-  public Mono<Object> retrieveCallInfo(Object incomingRequest) {
-    return Mono.justOrEmpty(incomingRequest);
+  public Mono<Void> retrieveCallInfo(RetrieveCallInfoContext context) {
+    return Mono.justOrEmpty(context)
+               .then();
   }
-
 }
