@@ -2,10 +2,9 @@ package com.straujupite.core.service;
 
 import org.springframework.stereotype.Component;
 
-import com.straujupite.common.dto.BitrixError;
-import com.straujupite.common.dto.GetCompanyInResponse;
 import com.straujupite.common.dto.common.callInfo.CallDirection;
 import com.straujupite.common.dto.common.callInfo.CallInfo;
+import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 
 import reactor.core.publisher.Mono;
 
@@ -14,26 +13,32 @@ public class GetClientPhoneNumberService {
 
     private CompanyInfoService companyInfoService;
 
-    public Mono<GetCompanyInResponse> getPhoneNumber(Mono<Object> requestMono) {
-        return requestMono
-                .flatMap(request -> {
-                    if (((CallInfo) request).getDirection().equals(CallDirection.OUT)) {
-                        return companyInfoService
-                                .retrieveCompanyByPhoneNumber(((CallInfo) request).getDestination().getNumber());
-                    } else if (((CallInfo) request).getDirection().equals(CallDirection.IN)) {
-                        return companyInfoService
-                                .retrieveCompanyByPhoneNumber(((CallInfo) request).getCaller().getNumber());
-                    } else {
-                        var tempResult = companyInfoService
-                                .retrieveCompanyByPhoneNumber(((CallInfo) request).getDestination().getNumber());
-                        if (tempResult.equals(new com.straujupite.common.error.BitrixError("Company ID not found"))) {
-                            return companyInfoService
-                                    .retrieveCompanyByPhoneNumber(((CallInfo) request).getCaller().getNumber());
-                        } else {
-                            return tempResult;
-                        }
-                    }
-                });
+    public Mono<RetrieveCallInfoContext> getPhoneNumber(RetrieveCallInfoContext context) {
+        
+        CallInfo callInfo = context.getRetrieveCallInfoCommand().getCallInfo();
+        CallDirection direction = callInfo.getDirection();
+        String destinationNumber = callInfo.getDestination().getNumber();
+        String callerNumber = callInfo.getCaller().getNumber();
 
+        if (context.getRetrieveCallInfoCommand().getEventType().toString().startsWith("LOST_")) {
+            companyInfoService.retrieveCompanyByPhoneNumber(context, destinationNumber);
+            if (context.getCompanyId() == null) {
+                context.withStrNumber(destinationNumber);
+                companyInfoService.retrieveCompanyByPhoneNumber(context, callerNumber);
+            }
+            context.withStrNumber(callerNumber);
+        }
+        
+        if (direction == CallDirection.OUT) {
+            context.withStrNumber(callerNumber);
+            return companyInfoService.retrieveCompanyByPhoneNumber(context, destinationNumber);
+        }
+        
+        if (direction == CallDirection.IN) {
+            context.withStrNumber(destinationNumber);
+            return companyInfoService.retrieveCompanyByPhoneNumber(context, callerNumber);
+        }
+        
+        return Mono.just(context);
     }
 }
