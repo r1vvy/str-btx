@@ -3,7 +3,6 @@ package com.straujupite.core.service;
 import org.springframework.stereotype.Component;
 
 import com.straujupite.common.dto.common.callInfo.CallDirection;
-import com.straujupite.common.dto.common.callInfo.CallInfo;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 
 import reactor.core.publisher.Mono;
@@ -12,33 +11,36 @@ import reactor.core.publisher.Mono;
 public class GetClientPhoneNumberService {
 
     private CompanyInfoService companyInfoService;
-
     public Mono<RetrieveCallInfoContext> getPhoneNumber(RetrieveCallInfoContext context) {
-        
-        CallInfo callInfo = context.getRetrieveCallInfoCommand().getCallInfo();
-        CallDirection direction = callInfo.getDirection();
-        String destinationNumber = callInfo.getDestination().getNumber();
-        String callerNumber = callInfo.getCaller().getNumber();
-
-        if (context.getRetrieveCallInfoCommand().getEventType().toString().startsWith("LOST_")) {
-            companyInfoService.retrieveCompanyByPhoneNumber(context, destinationNumber);
-            if (context.getCompanyId() == null) {
-                context.withStrNumber(destinationNumber);
-                companyInfoService.retrieveCompanyByPhoneNumber(context, callerNumber);
+        return Mono.justOrEmpty(context)
+                .filter(ctx -> ctx.getRetrieveCallInfoCommand().getCallInfo().getDirection().equals(CallDirection.IN))
+                .flatMap(this::getStrPhoneNumberFromDestination)
+                .switchIfEmpty(Mono.justOrEmpty(context)
+                .filter(ctx -> ctx.getRetrieveCallInfoCommand().getCallInfo().getDirection().equals(CallDirection.OUT)))
+                .flatMap(this::getStrPhoneNumberFromCaller)
+                .switchIfEmpty(getStrNumberFromDestinationOrCaller(context));
             }
-            context.withStrNumber(callerNumber);
-        }
-        
-        if (direction == CallDirection.OUT) {
-            context.withStrNumber(callerNumber);
-            return companyInfoService.retrieveCompanyByPhoneNumber(context, destinationNumber);
-        }
-        
-        if (direction == CallDirection.IN) {
-            context.withStrNumber(destinationNumber);
-            return companyInfoService.retrieveCompanyByPhoneNumber(context, callerNumber);
-        }
-        
-        return Mono.just(context);
+    
+    private Mono<RetrieveCallInfoContext> getStrPhoneNumberFromDestination(RetrieveCallInfoContext context) {
+        return Mono.justOrEmpty(context)
+                .map(ctx -> ctx.withStrNumber(ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()))
+                .flatMap(ctx -> companyInfoService.retrieveCompanyByPhoneNumber(context, ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()));
     }
+    private Mono<RetrieveCallInfoContext> getStrPhoneNumberFromCaller(RetrieveCallInfoContext context) {
+        return Mono.justOrEmpty(context)
+                .map(ctx -> ctx.withStrNumber(ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()))
+                .flatMap(ctx -> companyInfoService.retrieveCompanyByPhoneNumber(context, ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()));
+    }
+    
+    private Mono<RetrieveCallInfoContext> getStrNumberFromDestinationOrCaller(RetrieveCallInfoContext context) {
+        return Mono.justOrEmpty(context)
+                .flatMap(ctx -> companyInfoService.retrieveCompanyByPhoneNumber(context, ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()))
+                .filter(ctx -> ctx.getCompanyId() != null)
+                .map(ctx -> ctx.withStrNumber(ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()))
+                .switchIfEmpty(Mono.justOrEmpty(context)
+                .flatMap(ctx -> companyInfoService.retrieveCompanyByPhoneNumber(context, ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber())))
+                .filter(ctx -> ctx.getCompanyId() != null)
+                .map(ctx -> ctx.withStrNumber(ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()));
+            }
+                
 }
