@@ -12,13 +12,10 @@ public class GetClientPhoneNumberService {
 
     private CompanyInfoService companyInfoService;
     public Mono<RetrieveCallInfoContext> getPhoneNumber(RetrieveCallInfoContext context) {
-        return Mono.justOrEmpty(context)
-                .filter(ctx -> ctx.getRetrieveCallInfoCommand().getCallInfo().getDirection().equals(CallDirection.IN))
-                .flatMap(this::getStrPhoneNumberFromDestination)
-                .switchIfEmpty(Mono.justOrEmpty(context)
-                .filter(ctx -> ctx.getRetrieveCallInfoCommand().getCallInfo().getDirection().equals(CallDirection.OUT)))
-                .flatMap(this::getStrPhoneNumberFromCaller)
-                .switchIfEmpty(getStrNumberFromDestinationOrCaller(context));
+        return Mono.justOrEmpty(context.getRetrieveCallInfoCommand().getCallInfo().getDirection())
+                .filter(CallDirection.IN::equals)
+                .flatMap(direction -> getStrPhoneNumberFromDestination(context))
+                .switchIfEmpty(getStrPhoneNumberFromCaller(context));
             }
     
     private Mono<RetrieveCallInfoContext> getStrPhoneNumberFromDestination(RetrieveCallInfoContext context) {
@@ -29,7 +26,8 @@ public class GetClientPhoneNumberService {
     private Mono<RetrieveCallInfoContext> getStrPhoneNumberFromCaller(RetrieveCallInfoContext context) {
         return Mono.justOrEmpty(context)
                 .map(ctx -> ctx.withStrNumber(ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()))
-                .flatMap(ctx -> companyInfoService.retrieveCompanyByPhoneNumber(context, ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()));
+                .flatMap(ctx -> companyInfoService.retrieveCompanyByPhoneNumber(context, ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()))
+                .switchIfEmpty(getStrNumberFromDestinationOrCaller(context));
     }
     
     private Mono<RetrieveCallInfoContext> getStrNumberFromDestinationOrCaller(RetrieveCallInfoContext context) {
