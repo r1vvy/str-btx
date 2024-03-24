@@ -1,7 +1,9 @@
 package com.straujupite.core.service;
 
-import com.straujupite.common.dto.GetCompanyInResponse;
+import com.straujupite.common.dto.GetCompanyOutResponse;
+import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.out.adapter.RetrieveCompanyInfoAdapter;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -10,9 +12,22 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CompanyInfoService {
 
-    private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
+  private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
 
-    public Mono<GetCompanyInResponse> retrieveCompanyByPhoneNumber(String phoneNumber) {
-        return retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber(phoneNumber);
-    }
+  public Mono<RetrieveCallInfoContext> retrieveCompanyByPhoneNumber(
+    RetrieveCallInfoContext context,
+    String phoneNumber
+  ) {
+    return retrieveCompanyInfoAdapter
+      .retrieveCompanyByPhoneNumber(phoneNumber)
+      .map(this::getCompanyId)
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .map(context::withCompanyId)
+      .switchIfEmpty(Mono.error(new RuntimeException("Add some error here")));
+  }
+
+  private Optional<Integer> getCompanyId(GetCompanyOutResponse response) {
+    return response.getCompanies().stream().findFirst();
+  }
 }

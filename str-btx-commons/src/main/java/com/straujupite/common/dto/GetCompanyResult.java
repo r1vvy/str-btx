@@ -15,9 +15,7 @@ import java.util.List;
 public class GetCompanyResult {
 
     @JsonProperty("COMPANY")
-    private List<Integer> company;
-
-
+    private List<Integer> companies;
 }
 
 

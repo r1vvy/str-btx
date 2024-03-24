@@ -1,0 +1,2 @@
+path:
+  web-client-url: "${BITRIX_WEB_CLIENT_URL}"

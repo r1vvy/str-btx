@@ -8,14 +8,14 @@ public enum CallDirection {
   OUT("out"),
   IN("in");
 
-  private final String direction;
+  private final String value;
 
   @JsonValue
-  public String getDirection() {
-    return direction;
+  public String getValue() {
+    return value;
   }
 
-  CallDirection(String direction) {
-    this.direction = direction;
+  CallDirection(String value) {
+    this.value = value;
   }
 }
