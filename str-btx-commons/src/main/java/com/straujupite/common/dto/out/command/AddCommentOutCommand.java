@@ -1,27 +1,28 @@
 package com.straujupite.common.dto.out.command;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.straujupite.common.dto.common.bitrix.BtxComment;
 import com.straujupite.common.dto.common.bitrix.EntityType;
 import com.straujupite.common.util.AddCommentOutSerializer;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
 @JsonSerialize(using = AddCommentOutSerializer.class)
 public class AddCommentOutCommand {
 
-  @NotBlank
+  @NotNull
   private Integer entityId;
 
-  @NotBlank
+  @NotNull
   private EntityType entityType;
 
-  @NotBlank
-  private String comment;
+  @NotNull
+  private BtxComment comment;
 }

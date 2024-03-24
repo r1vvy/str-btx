@@ -16,7 +16,7 @@ idea {
 
 allprojects {
     apply(plugin = "java")
-//    apply(plugin = "checkstyle")
+    //    apply(plugin = "checkstyle")
     version = "1.0-SNAPSHOT"
 
     repositories {
@@ -27,29 +27,30 @@ allprojects {
     configurations.all {
         exclude(group = "com.google.collections", module = "google-collections")
     }
-}
 
-//checkstyle {
+    val uberJar by tasks.registering(Jar::class) {
+        archiveClassifier.set("uber")
+        from(subprojects.map { it.tasks.named<Jar>("jar").flatMap { it.archiveFile } })
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
+    //checkstyle {
 //    toolVersion = "10.13.0"
 //    config = resources.text.fromFile("/config/checkstyle/checkstyle.xml")
 //}
 
-val uberJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("uber")
-    from(subprojects.map { it.tasks.named<Jar>("jar").flatMap { it.archiveFile } })
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+    tasks.named("assemble").configure {
+        dependsOn(uberJar)
+    }
 
-tasks.named("build").configure {
-    dependsOn(tasks.jacocoTestReport)
-}
-
-tasks.named("assemble").configure {
-    dependsOn(uberJar)
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
 }
 
 tasks.test {
     finalizedBy(tasks.jacocoTestReport)
+    jvmArgs("-Dfile.encoding=UTF-8")
 }
 
 tasks.jacocoTestReport {
@@ -58,4 +59,8 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         html.required.set(true)
     }
+}
+
+tasks.named("build").configure {
+    dependsOn(tasks.jacocoTestReport)
 }
