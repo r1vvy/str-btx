@@ -13,5 +13,5 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GetStageIDInResponse {
   @JsonProperty("result")
-  private List<GetStageID> result;
+  private List<GetStageID> stages;
 }

@@ -13,26 +13,17 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RetrieveCompanyInfoAdapter {
 
-  private static final String URI =
-    "crm.duplicate.findbycomm.json?entity_type=COMPANY&type=PHONE&values[]=";
+	private static final String URI = "crm.duplicate.findbycomm.json?entity_type=COMPANY&type=PHONE&values[]=";
 
-  private final WebClient webClient;
+	private final WebClient webClient;
 
-  public Mono<GetCompanyOutResponse> retrieveCompanyByPhoneNumber(
-    String phoneNumber
-  ) {
-    return webClient
-      .get()
-      .uri(URI + phoneNumber)
-      .accept(MediaType.APPLICATION_JSON)
-      .retrieve()
-      .onStatus(
-        HttpStatusCode::is4xxClientError,
-        error ->
-          Mono.error(
-            new BitrixError("Could not establish connection with Bitrix")
-          )
-      )
-      .bodyToMono(GetCompanyOutResponse.class);
-  }
+	public Mono<GetCompanyOutResponse> retrieveCompanyByPhoneNumber(String phoneNumber) {
+		return webClient.get()
+						.uri(URI + phoneNumber)
+						.accept(MediaType.APPLICATION_JSON)
+						.retrieve()
+						.onStatus(HttpStatusCode::is4xxClientError,
+								error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
+						.bodyToMono(GetCompanyOutResponse.class);
+	}
 }

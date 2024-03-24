@@ -1,6 +1,7 @@
 package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.GetCompanyInResponse;
+import com.straujupite.common.dto.GetCompanyOutResponse;
 import com.straujupite.common.dto.GetCompanyResult;
 import com.straujupite.common.error.BitrixError;
 
@@ -33,7 +34,7 @@ public class RetrieveCompanyInfoTest {
 				.thenReturn(Mono.just(getCompanyInResponse()));
 		var result = retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("existingNumber").block();
 		Integer expectedID = 2930;
-		assertEquals(result.getResult().getCompany().get(0), expectedID);
+		assertEquals(result.getCompanies().get(0), expectedID);
 
 	}
 
@@ -49,12 +50,10 @@ public class RetrieveCompanyInfoTest {
 		assertEquals("Company ID not found", thrown.getMessage());
 	}
 
-	public GetCompanyInResponse getCompanyInResponse() {
+	public GetCompanyOutResponse getCompanyInResponse() {
 
-		return GetCompanyInResponse.builder()
-				.result(GetCompanyResult.builder()
-						.company(new ArrayList<>(Arrays.asList(2930)))
-						.build())
+		return GetCompanyOutResponse.builder()
+				.companies(Arrays.asList(2930))
 				.build();
 	}
 
