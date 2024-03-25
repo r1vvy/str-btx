@@ -1,7 +1,6 @@
 package com.straujupite.common.dto.common.callInfo;
 
 import jakarta.validation.Valid;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,11 +15,19 @@ public class CallInfo {
 
   private final CallDirection direction;
 
-  private final LocalDateTime callStarted;
+  private final String callStartedDateTime;
 
-  private final LocalDateTime callConnected;
+  private final String callConnectedDateTime;
+
+  private final String callEndedDateTime;
+
+  private final String lastContactDateTime;
+
+  private final String contactName;
 
   private final Integer connectionTime;
 
   private final Integer attempts;
+
+  private final Integer status;
 }
