@@ -12,20 +12,20 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CompanyInfoService {
 
-	private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
+    private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
 
-	public Mono<RetrieveCallInfoContext> retrieveCompanyByPhoneNumber(RetrieveCallInfoContext context, String phoneNumber) {
-		return retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber(phoneNumber)
-										.map(this::getCompanyId)
-										.filter(Optional::isPresent)
-										.map(Optional::get)
-										.map(context::withCompanyId)
-										.switchIfEmpty(Mono.error(new RuntimeException("Add some error here")));
-	}
+    public Mono<RetrieveCallInfoContext> retrieveCompanyByPhoneNumber(RetrieveCallInfoContext context, String phoneNumber) {
+        return retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber(phoneNumber)
+                                         .map(this::getCompanyId)
+                                         .filter(Optional::isPresent)
+                                         .map(Optional::get)
+                                         .map(context::withCompanyId)
+                                         .switchIfEmpty(Mono.error(new RuntimeException("Add some error here")));
+    }
 
-	private Optional<Integer> getCompanyId(GetCompanyOutResponse response) {
-		return response.getCompanies()
-				.stream()
-				.findFirst();
-	}
+    private Optional<Integer> getCompanyId(GetCompanyOutResponse response) {
+        return response.getCompanies()
+                       .stream()
+                       .findFirst();
+    }
 }
