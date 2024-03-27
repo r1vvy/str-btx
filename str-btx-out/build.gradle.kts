@@ -10,5 +10,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.reactor.test)
+    testImplementation(libs.mockitoJunit)
 
 }
