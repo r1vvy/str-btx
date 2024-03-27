@@ -16,6 +16,7 @@ googleCloudLogging = "3.15.16"
 hibernate = "8.0.0.Final"
 jsonpath = "2.9.0"
 jsonassert = "1.5.1"
+mockitoJunit = "5.3.1"
 
 [libraries]
 reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor" }
@@ -34,6 +35,7 @@ slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 google-cloud-logging = { module = "com.google.cloud:google-cloud-logging", version.ref = "googleCloudLogging" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+mockitoJunit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockitoJunit"}
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "reactor" }
 wiremock = { module = "org.wiremock:wiremock", version.ref = "wiremock" }
