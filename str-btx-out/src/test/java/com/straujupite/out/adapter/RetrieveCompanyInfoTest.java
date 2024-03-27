@@ -1,59 +1,59 @@
-// package com.straujupite.out.adapter;
+package com.straujupite.out.adapter;
 
-// import com.straujupite.common.dto.GetCompanyOutResponse;
-// import com.straujupite.common.error.BitrixError;
-// import com.straujupite.out.adapter.RetrieveCompanyInfoAdapter;
+import com.straujupite.common.dto.GetCompanyOutResponse;
+import com.straujupite.common.error.BitrixError;
 
-// import org.junit.Assert;
-// import org.junit.Test;
-// import org.junit.runner.RunWith;
-// import org.mockito.*;
-// import org.mockito.junit.MockitoJUnitRunner;
-// import org.springframework.web.reactive.function.client.WebClient;
-// import reactor.core.publisher.Mono;
 
-// import java.util.ArrayList;
-// import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-// import static org.junit.Assert.assertEquals;
-// import static org.junit.Assert.assertThrows;
-// import static org.mockito.Mockito.*;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-// @RunWith(MockitoJUnitRunner.class)
-// public class RetrieveCompanyInfoTest {
-// 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
-// 	private WebClient webClient;
-// 	@InjectMocks
-// 	private RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
+import java.util.Arrays;
 
-// 	@Test
-// 	public void retrieveCompanyWithExistingNumber() {
+import static org.mockito.Mockito.*;
 
-// 		when(retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("existingNumber"))
-// 				.thenReturn(Mono.just(getCompanyInResponse()));
-// 		var result = retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("existingNumber").block();
-// 		Integer expectedID = 2930;
-// 		assertEquals(result.getCompanies().get(0), expectedID);
+@ExtendWith(MockitoExtension.class)
+public class RetrieveCompanyInfoTest {
+	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
+	private WebClient webClient;
+	@InjectMocks
+	private RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
 
-// 	}
+	@Test
+	public void retrieveCompanyWithExistingNumber() {
 
-// 	@Test
-// 	public void retrieveCompanyWithWrongNumber() {
-// 		when(retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("nonExistingNumber"))
-// 				.thenThrow(new BitrixError("Company ID not found"));
+		when(retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("existingNumber"))
+				.thenReturn(Mono.just(getCompanyInResponse()));
+		var result = retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("existingNumber").block();
+		Integer expectedID = 2930;
+		System.out.println(expectedID);
+		assertEquals(result.getCompanies().get(0), expectedID);
 
-// 		BitrixError thrown = assertThrows(
-// 				BitrixError.class,
-// 				() -> retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("nonExistingNumber"));
+	}
 
-// 		assertEquals("Company ID not found", thrown.getMessage());
-// 	}
+	@Test
+	public void retrieveCompanyWithWrongNumber() {
+		when(retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("nonExistingNumber"))
+				.thenThrow(new BitrixError("Company ID not found"));
 
-// 	public GetCompanyOutResponse getCompanyInResponse() {
+		BitrixError thrown = assertThrows(
+				BitrixError.class,
+				() -> retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber("nonExistingNumber"));
 
-// 		return GetCompanyOutResponse.builder()
-// 				.companies(Arrays.asList(2930))
-// 				.build();
-// 	}
+		assertEquals("Company ID not found", thrown.getMessage());
+	}
 
-// }
+	public GetCompanyOutResponse getCompanyInResponse() {
+
+		return GetCompanyOutResponse.builder()
+				.companies(Arrays.asList(2930))
+				.build();
+	}
+
+}
