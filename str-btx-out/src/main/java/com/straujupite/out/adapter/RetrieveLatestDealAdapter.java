@@ -1,10 +1,7 @@
 package com.straujupite.out.adapter;
 
-import com.straujupite.common.dto.GetStageIDInResponse;
-import com.straujupite.common.error.BitrixError;
-
+import com.straujupite.common.dto.out.response.GetDealInfoOutResponse;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,13 +14,13 @@ public class RetrieveLatestDealAdapter {
 
 	private final WebClient webClient;
 
-	public Mono<GetStageIDInResponse> retrieveLatestDeal(String companyID) {
+	public Mono<GetDealInfoOutResponse> retrieveLatestDeal(String companyID) {
 		return webClient.get()
-				.uri(String.format(URI, companyID))
-				.retrieve()
-				.onStatus(HttpStatusCode::is4xxClientError,
-						error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
-				.bodyToMono(GetStageIDInResponse.class);
+										.uri(String.format(URI, companyID))
+										.retrieve()
+										.onStatus(HttpStatusCode::is4xxClientError,
+												error -> Mono.error(new RuntimeException("Could not establish connection with Bitrix")))
+										.bodyToMono(GetDealInfoOutResponse.class);
 
 	}
 }

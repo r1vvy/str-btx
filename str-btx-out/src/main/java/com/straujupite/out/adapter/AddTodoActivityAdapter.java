@@ -1,13 +1,11 @@
 package com.straujupite.out.adapter;
 
-import com.straujupite.common.config.WebClientConfiguration;
 import com.straujupite.common.dto.ActivityToDo;
-import com.straujupite.common.dto.GetActivityIdInResponse;
-import com.straujupite.common.error.BitrixError;
+import com.straujupite.common.dto.BitrixError;
+import com.straujupite.common.dto.out.response.GetActivityIdOutResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -27,12 +25,12 @@ public class AddTodoActivityAdapter {
                 .uri(String.format(URI, activityToDo.companyID(), activityToDo.deadline(), activityToDo.description()))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
-                        response -> response.bodyToMono(com.straujupite.common.dto.BitrixError.class)
-                                .flatMap(error -> Mono.error(new BitrixError(error.getErrorDescription()))))
-                .bodyToMono(GetActivityIdInResponse.class)
+                        response -> response.bodyToMono(BitrixError.class)
+                                .flatMap(error -> Mono.error(new RuntimeException(error.getErrorDescription()))))
+                .bodyToMono(GetActivityIdOutResponse.class)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof DecodingException) {
-                        return new BitrixError("Failed to add activity");
+                        return new RuntimeException("Failed to add activity");
                     }
                     return throwable;
                 })

@@ -1,6 +1,6 @@
 package com.straujupite.common.dto.context;
 
-import com.straujupite.common.dto.GetStageID;
+import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.in.command.RetrieveCallInfoCommand;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +18,6 @@ public class RetrieveCallInfoContext {
 
   private final Integer companyId;
 
-  private final GetStageID dealStage;
+  private final DealInfo dealInfo;
 
 }

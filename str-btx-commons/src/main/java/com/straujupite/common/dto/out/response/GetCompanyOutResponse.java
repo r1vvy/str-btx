@@ -1,4 +1,4 @@
-package com.straujupite.common.dto;
+package com.straujupite.common.dto.out.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

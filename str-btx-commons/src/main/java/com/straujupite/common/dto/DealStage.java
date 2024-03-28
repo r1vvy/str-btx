@@ -1,6 +1,6 @@
 package com.straujupite.common.dto;
 
-public enum DealType {
+public enum DealStage {
 
     NEW_DEAL("NEW"),
     IN_PROCESS("UC_VL6HOT"),
@@ -15,12 +15,12 @@ public enum DealType {
 
     private final String dealType;
 
-    DealType(String dealType) {
+    DealStage(String dealType) {
         this.dealType = dealType;
     }
 
-    public static DealType getDealType(String dealType) {
-        for (DealType deal : DealType.values()) {
+    public static DealStage getDealType(String dealType) {
+        for (DealStage deal : DealStage.values()) {
             if (deal.dealType.equalsIgnoreCase(dealType)) {
                 return deal;
             }

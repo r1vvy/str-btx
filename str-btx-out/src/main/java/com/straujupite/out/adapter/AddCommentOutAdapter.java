@@ -1,7 +1,6 @@
 package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.out.command.AddCommentOutCommand;
-import com.straujupite.common.error.BitrixError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -36,6 +35,6 @@ public class AddCommentOutAdapter {
   }
 
   private Mono<Error> createBitrixError(String message) {
-    return Mono.error(new BitrixError(message));
+    return Mono.error(new RuntimeException(message));
   }
 }
