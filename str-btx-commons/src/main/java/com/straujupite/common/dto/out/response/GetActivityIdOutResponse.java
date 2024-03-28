@@ -1,4 +1,4 @@
-package com.straujupite.common.dto;
+package com.straujupite.common.dto.out.response;
 
 
 import com.straujupite.common.dto.result.TodoActivityResult;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetActivityIdInResponse {
+public class GetActivityIdOutResponse {
 
     private TodoActivityResult result;
 }

@@ -1,26 +1,18 @@
-package com.straujupite.common.dto;
-
+package com.straujupite.common.dto.out.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.straujupite.common.dto.DealInfo;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class GetCompanyOutResponse {
-
-    @JsonProperty("COMPANY")
-    private List<Integer> companies;
+public class GetDealInfoOutResponse {
+  @JsonProperty("result")
+  private List<DealInfo> deals;
 }
-
-
-
-
-
-
