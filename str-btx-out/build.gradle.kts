@@ -7,7 +7,8 @@ dependencies {
     implementation(libs.reactor.core)
     implementation(libs.spring.boot.starter.webflux)
 
-    testImplementation(libs.junit)
+    testImplementation(libs.junitApi)
+    testImplementation(libs.junitEngine)
     testImplementation(libs.mockito.core)
     testImplementation(libs.reactor.test)
     testImplementation(libs.mockitoJunit)

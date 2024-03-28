@@ -46,21 +46,23 @@ allprojects {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
-}
+    tasks.test {
+//        finalizedBy(tasks.jacocoTestReport)
+        jvmArgs("-Dfile.encoding=UTF-8")
+        useJUnitPlatform()
 
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
-    jvmArgs("-Dfile.encoding=UTF-8")
-}
-
-tasks.jacocoTestReport {
-    dependsOn("test")
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
-}
-
-tasks.named("build").configure {
-    dependsOn(tasks.jacocoTestReport)
+//    tasks.jacocoTestReport {
+//        dependsOn("test")
+//        reports {
+//            xml.required.set(true)
+//            html.required.set(true)
+//        }
+//    }
+    tasks.named("build").configure {
+        dependsOn(tasks.test)
+    }
 }
