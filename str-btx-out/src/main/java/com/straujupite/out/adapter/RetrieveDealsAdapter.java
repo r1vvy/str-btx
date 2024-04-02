@@ -1,7 +1,6 @@
 package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
-import com.straujupite.common.error.BitrixError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class RetrieveDealsAdapter {
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError,
                         error -> Mono.error(
-                            new BitrixError("Could not establish connection with Bitrix")))
+                            new RuntimeException("Could not establish connection with Bitrix")))
                     .bodyToMono(GetCompanyDealsOutResponse.class);
 
   }

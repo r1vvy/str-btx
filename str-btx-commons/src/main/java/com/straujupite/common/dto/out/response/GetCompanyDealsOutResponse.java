@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 public class GetCompanyDealsOutResponse {
-
   @JsonProperty("result")
   private List<DealInfo> deals;
 }

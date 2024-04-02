@@ -1,7 +1,6 @@
 package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
-import com.straujupite.common.error.BitrixError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -21,7 +20,8 @@ public class RetrieveCompanyInfoAdapter {
                     .uri(URI + phoneNumber)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(new BitrixError("Could not establish connection with Bitrix")))
+                    .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(
+                        new RuntimeException("Could not establish connection with Bitrix")))
                     .bodyToMono(GetCompanyOutResponse.class);
     }
 }

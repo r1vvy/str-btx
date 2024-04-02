@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class RetrieveLatestCompanyDealService {
+public class RetrieveLatestDealService {
 
 	private final RetrieveDealsAdapter retrieveDealsAdapter;
 
