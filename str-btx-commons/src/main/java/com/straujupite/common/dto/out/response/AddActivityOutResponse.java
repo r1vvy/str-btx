@@ -1,4 +1,5 @@
-package com.straujupite.common.dto.result;
+package com.straujupite.common.dto.out.response;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,10 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class TodoActivityResult {
-
+@AllArgsConstructor
+public class AddActivityOutResponse {
     @JsonProperty("id")
-    public Integer activityID;
+    private Integer activityID;
 }

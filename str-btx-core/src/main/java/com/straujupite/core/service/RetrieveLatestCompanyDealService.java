@@ -1,14 +1,10 @@
 package com.straujupite.core.service;
 
-import com.straujupite.common.dto.GetStageID;
-import com.straujupite.common.dto.GetStageIDInResponse;
+import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
-import com.straujupite.out.adapter.RetrieveLatestDealAdapter;
-
+import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
+import com.straujupite.out.adapter.RetrieveDealsAdapter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
-
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -16,20 +12,19 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RetrieveLatestCompanyDealService {
 
-	private final RetrieveLatestDealAdapter retrieveLatestDealAdapter;
+	private final RetrieveDealsAdapter retrieveDealsAdapter;
 
-	public Mono<RetrieveCallInfoContext> retrieveLatestDealStage(RetrieveCallInfoContext context, String companyID) {
-		return retrieveLatestDealAdapter.retrieveLatestDeal(companyID)
-				.map(this::getStageID)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.map(context::withDealStage)
-				.switchIfEmpty(Mono.error(new RuntimeException("No deals found")));
+	public Mono<RetrieveCallInfoContext> retrieveLatestDealInfo(RetrieveCallInfoContext context,
+			String companyID) {
+		return retrieveDealsAdapter.retrieveDealsByCompanyId(companyID)
+															 .map(this::getLatestDeal)
+															 .map(context::withDealInfo);
 	}
 
-	private Optional<GetStageID> getStageID(GetStageIDInResponse response) {
-		return response.getStages()
-				.stream()
-				.findFirst();
+	private DealInfo getLatestDeal(GetCompanyDealsOutResponse response) {
+		return response.getDeals()
+									 .stream()
+									 .findFirst()
+									 .orElseThrow(() -> new RuntimeException("No deals found"));
 	}
 }

@@ -1,6 +1,6 @@
 package com.straujupite.common.dto;
 
-public enum DealType {
+public enum DealStage {
 
     NEW_DEAL("NEW"),
     IN_PROCESS("UC_VL6HOT"),
@@ -13,15 +13,15 @@ public enum DealType {
     SUCCESSFUL_DEAL("WON"),
     FAILED_DEAL("LOSE");
 
-    private final String dealType;
+    private final String stage;
 
-    DealType(String dealType) {
-        this.dealType = dealType;
+    DealStage(String stage) {
+        this.stage = stage;
     }
 
-    public static DealType getDealType(String dealType) {
-        for (DealType deal : DealType.values()) {
-            if (deal.dealType.equalsIgnoreCase(dealType)) {
+    public static DealStage getDealStage(String stage) {
+        for (DealStage deal : DealStage.values()) {
+            if (deal.stage.equalsIgnoreCase(stage)) {
                 return deal;
             }
         }

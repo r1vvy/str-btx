@@ -1,6 +1,6 @@
 package com.straujupite.out.adapter;
 
-import com.straujupite.common.dto.GetCompanyOutResponse;
+import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
 import com.straujupite.common.error.BitrixError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;

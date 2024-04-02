@@ -27,7 +27,5 @@ public class CallInfo {
 
   private final Integer connectionTime;
 
-  private final Integer attempts;
-
   private final Integer status;
 }
