@@ -14,9 +14,9 @@ public class DealStageDeserializer extends StdDeserializer<DealStage> {
 
     @Override
     public DealStage deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-            throws IOException {
+        throws IOException {
         String value = jsonParser.getValueAsString();
-        return DealStage.getDealType(value);
+        return DealStage.getDealStage(value);
     }
 
 }

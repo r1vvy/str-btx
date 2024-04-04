@@ -1,8 +1,8 @@
 package com.straujupite.out.adapter;
 
-import com.straujupite.common.dto.ActivityToDo;
 import com.straujupite.common.dto.BitrixError;
-import com.straujupite.common.dto.out.response.GetActivityIdOutResponse;
+import com.straujupite.common.dto.out.request.AddActivityOutRequest;
+import com.straujupite.common.dto.out.response.AddActivityOutResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatusCode;
@@ -12,25 +12,27 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class AddTodoActivityAdapter {
+public class AddActivityAdapter {
 
     private final WebClient webClient;
 
     private static final String URI = "crm.activity.todo.add?ownerTypeId=4&ownerId=%d&deadline=%s&description=%s";
 
-    public Mono<Void> addTodoActivity(ActivityToDo activityToDo) {
+  public Mono<Void> addActivity(AddActivityOutRequest addActivityOutRequest) {
 
-        // deadline format: "YYYY-MM-DDThh:mm:ss" ex: "2024-12-31T15:00:00"
         return webClient.get()
-                .uri(String.format(URI, activityToDo.companyID(), activityToDo.deadline(), activityToDo.description()))
+                        .uri(String.format(URI, addActivityOutRequest.getCompanyID(),
+                            addActivityOutRequest.getDeadline(),
+                            addActivityOutRequest.getDescription()))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
-                        response -> response.bodyToMono(BitrixError.class)
-                                .flatMap(error -> Mono.error(new RuntimeException(error.getErrorDescription()))))
-                .bodyToMono(GetActivityIdOutResponse.class)
+                    response -> response.bodyToMono(BitrixError.class)
+                                        .flatMap(error -> Mono.error(
+                                            new RuntimeException(error.getErrorDescription()))))
+                        .bodyToMono(AddActivityOutResponse.class)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof DecodingException) {
-                        return new RuntimeException("Failed to add activity");
+                      return new RuntimeException("Failed to add activity");
                     }
                     return throwable;
                 })

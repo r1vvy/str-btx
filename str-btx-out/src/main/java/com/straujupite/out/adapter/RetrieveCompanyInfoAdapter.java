@@ -20,7 +20,8 @@ public class RetrieveCompanyInfoAdapter {
                     .uri(URI + phoneNumber)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(new RuntimeException("Could not establish connection with Bitrix")))
+                    .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(
+                        new RuntimeException("Could not establish connection with Bitrix")))
                     .bodyToMono(GetCompanyOutResponse.class);
     }
 }

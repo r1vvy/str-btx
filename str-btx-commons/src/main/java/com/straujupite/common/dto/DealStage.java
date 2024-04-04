@@ -13,15 +13,15 @@ public enum DealStage {
     SUCCESSFUL_DEAL("WON"),
     FAILED_DEAL("LOSE");
 
-    private final String dealType;
+    private final String stage;
 
-    DealStage(String dealType) {
-        this.dealType = dealType;
+    DealStage(String stage) {
+        this.stage = stage;
     }
 
-    public static DealStage getDealType(String dealType) {
+    public static DealStage getDealStage(String stage) {
         for (DealStage deal : DealStage.values()) {
-            if (deal.dealType.equalsIgnoreCase(dealType)) {
+            if (deal.stage.equalsIgnoreCase(stage)) {
                 return deal;
             }
         }

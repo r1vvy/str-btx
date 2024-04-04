@@ -22,5 +22,5 @@ public class DealInfo {
 
   @JsonDeserialize(using = DealStageDeserializer.class)
   @JsonProperty("STAGE_ID")
-  private DealStage stageId;
+  private DealStage stage;
 }
