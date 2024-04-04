@@ -14,8 +14,9 @@ public class CompanyInfoService {
 
     private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
 
-    public Mono<RetrieveCallInfoContext> retrieveCompanyByPhoneNumber(RetrieveCallInfoContext context, String phoneNumber) {
-        return retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber(phoneNumber)
+    public Mono<RetrieveCallInfoContext> getCompanyIdByPhoneNumber(RetrieveCallInfoContext context,
+        String phoneNumber) {
+        return retrieveCompanyInfoAdapter.retrieveCompanyIdByPhoneNumber(phoneNumber)
                                          .map(this::getCompanyId)
                                          .filter(Optional::isPresent)
                                          .map(Optional::get)

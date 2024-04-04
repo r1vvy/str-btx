@@ -7,6 +7,7 @@ import com.straujupite.core.service.CallInfoService;
 import com.straujupite.in.config.PathConfiguration;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +22,11 @@ public class RetrieveCallInfoController {
   private final CallInfoService callInfoService;
 
   @PostMapping
-  public Mono<Void> retrieveCallInfo(@RequestBody @Valid RetrieveCallInfoCommand command) {
+  public Mono<ResponseEntity<Void>> retrieveCallInfo(
+      @RequestBody @Valid RetrieveCallInfoCommand command) {
     return Mono.just(createContextFromCommand(command))
-               .flatMap(callInfoService::retrieveCallInfo);
+               .flatMap(callInfoService::retrieveCallInfo)
+               .thenReturn(ResponseEntity.ok().build());
   }
 
   private RetrieveCallInfoContext createContextFromCommand(RetrieveCallInfoCommand command) {

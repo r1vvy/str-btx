@@ -15,7 +15,7 @@ public class RetrieveCompanyInfoAdapter {
 
   private final WebClient webClient;
 
-  public Mono<GetCompanyOutResponse> retrieveCompanyByPhoneNumber(String phoneNumber) {
+  public Mono<GetCompanyOutResponse> retrieveCompanyIdByPhoneNumber(String phoneNumber) {
     return webClient.get()
                     .uri(URI + phoneNumber)
                     .accept(MediaType.APPLICATION_JSON)
