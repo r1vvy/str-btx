@@ -2,6 +2,7 @@ package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -10,10 +11,10 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class RetrieveDealsAdapter {
-
   private static final String URI = "crm.deal.list.json?FILTER[COMPANY_ID]=%s&ORDER[DATE_CREATE]=DESC&FILTER[STAGE_SEMANTIC_ID]=P";
 
-  private final WebClient webClient;
+  @Autowired
+  private WebClient webClient;
 
   public Mono<GetCompanyDealsOutResponse> retrieveDealsByCompanyId(String companyID) {
     return webClient.get()

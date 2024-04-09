@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class UpdateActivityAdapter {
-
   private static final String URI = "crm.activity.todo.updateDeadline?ownerTypeId=%s&ownerId=%s&id=%s&value=%s";
 
   @Autowired

@@ -1,2 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  level:
+    com.meawallet.weatherapp: DEBUG
+
+server:
+  error:
+    include-message: always
+  port: ${API_PORT}
+
 path:
-  web-client-url: "${BITRIX_WEB_CLIENT_URL}"
+  web-client-url: "straujupte.bitrix24.eu/rest/24/${BITRIX_URI}/"

@@ -2,6 +2,7 @@ package com.straujupite.out.adapter;
 
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,8 @@ import reactor.core.publisher.Mono;
 public class RetrieveCompanyInfoAdapter {
   private static final String URI = "crm.duplicate.findbycomm.json?entity_type=COMPANY&type=PHONE&values[]=";
 
-  private final WebClient webClient;
+  @Autowired
+  private WebClient webClient;
 
   public Mono<GetCompanyOutResponse> retrieveCompanyIdByPhoneNumber(String phoneNumber) {
     return webClient.get()
