@@ -46,7 +46,7 @@ public class RetrieveCompanyInfoAdapterTest {
 		when(responseSpec.bodyToMono(GetCompanyOutResponse.class))
 				.thenReturn(Mono.just(getCompanyInSuccessfulResponse()));
 
-		StepVerifier.create(retrieveCompanyInfoAdapter.retrieveCompanyByPhoneNumber(NUMBER))
+    StepVerifier.create(retrieveCompanyInfoAdapter.retrieveCompanyIdByPhoneNumber(NUMBER))
 				.assertNext(result -> {
 					assertNotNull(result);
 					assertEquals(List.of(ID), result.getCompanies());
