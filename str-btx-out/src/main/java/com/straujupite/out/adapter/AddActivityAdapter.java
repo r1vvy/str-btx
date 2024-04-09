@@ -4,6 +4,7 @@ import com.straujupite.common.dto.BitrixError;
 import com.straujupite.common.dto.out.request.AddActivityOutRequest;
 import com.straujupite.common.dto.out.response.AddActivityOutResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -13,10 +14,10 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class AddActivityAdapter {
-
-    private final WebClient webClient;
-
     private static final String URI = "crm.activity.todo.add?ownerTypeId=4&ownerId=%d&deadline=%s&description=%s";
+
+  @Autowired
+  private WebClient webClient;
 
   public Mono<Void> addActivity(AddActivityOutRequest addActivityOutRequest) {
 
