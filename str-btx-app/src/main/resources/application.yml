@@ -13,4 +13,4 @@ server:
   port: ${API_PORT}
 
 path:
-  web-client-url: "straujupte.bitrix24.eu/rest/24/${BITRIX_URI}/"
+  web-client-url: "${OUTGOING_REQUEST_URL}"
