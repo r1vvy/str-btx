@@ -1,31 +1,38 @@
 package com.straujupite.common.dto.common.callInfo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@Builder
+@RequiredArgsConstructor
 public class CallInfo {
 
   @Valid
-  private final Caller caller;
+  private Caller caller;
+
   @Valid
-  private final Destination destination;
+  private Destination destination;
 
-  private final CallDirection direction;
+  @Valid
+  private CallDirection direction;
 
-  private final String callStartedDateTime;
+  @JsonProperty("callStarted")
+  private String callStartedDateTime;
 
-  private final String callConnectedDateTime;
+  @JsonProperty("callConnected")
+  private String callConnectedDateTime;
 
-  private final String callEndedDateTime;
+  @JsonProperty("callEnded")
+  private String callEndedDateTime;
 
-  private final String lastContactDateTime;
+  @JsonProperty("lastContact")
+  private String lastContactDateTime;
 
-  private final String contactName;
+  private String contactName;
 
-  private final Integer connectionTime;
+  private Integer connectionTime;
 
-  private final Integer status;
+  private Integer status;
 }
