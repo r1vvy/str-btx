@@ -1,19 +1,13 @@
 package com.straujupite.common.dto.common.callInfo;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class Destination {
 
   @NotBlank
   @JsonProperty("destination")
-  String number;
-
-  @JsonCreator
-  public Destination(@JsonProperty("destination") String number) {
-    this.number = number;
-  }
+  private final String value;
 }

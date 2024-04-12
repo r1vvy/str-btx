@@ -1,5 +1,6 @@
 package com.straujupite.common.dto.common.callInfo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
@@ -17,5 +18,15 @@ public enum CallDirection {
 
   CallDirection(String value) {
     this.value = value;
+  }
+
+  @JsonCreator
+  public static CallDirection forValue(String value) {
+    for (CallDirection type : CallDirection.values()) {
+      if (type.getValue().equalsIgnoreCase(value)) {
+        return type;
+      }
+    }
+    throw new IllegalArgumentException("Unknown CallDirection: " + value);
   }
 }

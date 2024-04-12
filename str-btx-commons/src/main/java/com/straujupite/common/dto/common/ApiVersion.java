@@ -1,18 +1,19 @@
 package com.straujupite.common.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Data;
+import lombok.ToString;
 
-@Getter
+@Data
+@ToString
 public class ApiVersion {
 
   @NotBlank
-  private final String version;
+  private String version;
 
   @JsonCreator
-  public ApiVersion(@JsonProperty("version") String version) {
+  public ApiVersion(String version) {
     this.version = version;
   }
 }

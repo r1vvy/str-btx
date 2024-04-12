@@ -22,32 +22,32 @@ public class ClientInfoService {
     private Mono<RetrieveCallInfoContext> getStrPhoneNumberFromDestination(RetrieveCallInfoContext context) {
         return Mono.justOrEmpty(context)
                    .map(ctx -> ctx.withStrNumber(
-                       ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()))
+                       ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(ctx,
-                       ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()));
+                       ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()));
     }
     private Mono<RetrieveCallInfoContext> getStrPhoneNumberFromCaller(RetrieveCallInfoContext context) {
         return Mono.justOrEmpty(context)
                    .map(ctx -> ctx.withStrNumber(
-                       ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()))
+                       ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(ctx,
-                       ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()))
+                       ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))
                    .switchIfEmpty(getStrNumberFromDestinationOrCaller(context));
     }
 
     private Mono<RetrieveCallInfoContext> getStrNumberFromDestinationOrCaller(RetrieveCallInfoContext context) {
         return Mono.justOrEmpty(context)
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(context,
-                       ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getNumber()))
+                       ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))
                    .filter(ctx -> ctx.getCompanyId() != null)
                    .map(ctx -> ctx.withStrNumber(
-                       ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()))
+                       ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
                    .switchIfEmpty(companyInfoService.getCompanyIdByPhoneNumber(context,
-                       context.getRetrieveCallInfoCommand().getCallInfo().getCaller().getNumber()))
+                       context.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
                    .filter(ctx -> ctx.getCompanyId() != null)
                    .map(ctx -> ctx.withStrNumber(
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination()
-                          .getNumber()));
+                          .getValue()));
     }
 
                 

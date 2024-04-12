@@ -1,5 +1,7 @@
 package com.straujupite.common.dto.common.callInfo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 
@@ -13,9 +15,20 @@ public enum RetrieveCallInfoEventType {
   LOST_CALLER_UPDATED("LostCallerUpdated"),
   LOST_CALLER_REMOVED("LostCallerRemoved");
 
-  private final String eventType;
+  @JsonValue
+  private final String value;
 
-  RetrieveCallInfoEventType(String eventType) {
-    this.eventType = eventType;
+  RetrieveCallInfoEventType(String value) {
+    this.value = value;
+  }
+
+  @JsonCreator
+  public static RetrieveCallInfoEventType forValue(String value) {
+    for (RetrieveCallInfoEventType type : RetrieveCallInfoEventType.values()) {
+      if (type.getValue().equalsIgnoreCase(value)) {
+        return type;
+      }
+    }
+    throw new IllegalArgumentException("Unknown RetrieveCallInfoEventType: " + value);
   }
 }
