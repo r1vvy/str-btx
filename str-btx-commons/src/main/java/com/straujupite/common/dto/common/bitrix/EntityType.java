@@ -10,9 +10,9 @@ public enum EntityType {
   DEAL("deal"),
   ORDER("order");
 
-  private final String entityType;
+  private final String value;
 
-  EntityType(String entityType) {
-    this.entityType = entityType;
+  EntityType(String value) {
+    this.value = value;
   }
 }

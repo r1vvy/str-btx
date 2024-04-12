@@ -1,7 +1,8 @@
 package com.straujupite.common.dto.out.response;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.straujupite.common.util.deserializer.GetCompanyOutResponseDeserializer;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonDeserialize(using = GetCompanyOutResponseDeserializer.class)
 public class GetCompanyOutResponse {
-
-  @JsonProperty("COMPANY")
   private List<Integer> companies;
 }
 

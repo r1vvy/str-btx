@@ -9,12 +9,14 @@ import com.straujupite.common.dto.out.command.AddCommentOutCommand;
 import com.straujupite.out.adapter.AddCommentOutAdapter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AddCommentService {
 
   @Autowired
@@ -24,13 +26,18 @@ public class AddCommentService {
 
   public Mono<RetrieveCallInfoContext> addComment(RetrieveCallInfoContext context) {
     return Mono.fromSupplier(() -> findFlow(context.getRetrieveCallInfoCommand().getEventType()))
+               .doOnNext(flow -> log.debug("Executing addComment flow: {}",
+                   flow.getClass().getCanonicalName()))
                .flatMap(eventFlow -> eventFlow.createComment(context))
                .map(comment -> createOutCommand(context, comment))
+               .doOnNext(cmd -> log.debug("About to call addComment: {}", cmd))
                .flatMap(addCommentAdapter::addComment)
-               .thenReturn(context);
+               .onErrorResume(err -> {
+                 log.debug("Error while adding comment: {}", err.getMessage());
+                 return Mono.empty();
+               }).thenReturn(context);
   }
 
-  // todo: add specific error after handling is planned
   private AddCommentEventTypeFlow findFlow(RetrieveCallInfoEventType retrieveCallInfoEventType) {
     return eventFlows.stream()
                      .filter(flow -> flow.isEventType(retrieveCallInfoEventType))
