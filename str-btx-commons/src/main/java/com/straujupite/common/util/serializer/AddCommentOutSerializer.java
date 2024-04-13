@@ -1,4 +1,4 @@
-package com.straujupite.common.util;
+package com.straujupite.common.util.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -25,7 +25,7 @@ public class AddCommentOutSerializer extends StdSerializer<AddCommentOutCommand>
     jsonGenerator.writeObjectFieldStart("fields");
 
     jsonGenerator.writeNumberField("ENTITY_ID", addCommentOutCommand.getEntityId());
-    jsonGenerator.writeStringField("ENTITY_TYPE", addCommentOutCommand.getEntityType().toString());
+    jsonGenerator.writeStringField("ENTITY_TYPE", addCommentOutCommand.getEntityType().getValue());
     jsonGenerator.writeStringField("COMMENT", addCommentOutCommand.getComment().getValue());
 
     jsonGenerator.writeEndObject();

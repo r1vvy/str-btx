@@ -12,7 +12,8 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class LostCallerAddedFlowService implements AddCommentEventTypeFlow {
-  private static final String FLOW_TEMPLATE = "Zvans ar klientu (tālr. nr. %s) no tālr. nr. %s. pabeigts. %s plkst. %s";
+
+  private static final String FLOW_TEMPLATE = "Klientam neizdevās sazvanīt tālr. nr. %s (%s). %s plkst. %s";
 
   private final CommentBuilder commentBuilder;
 

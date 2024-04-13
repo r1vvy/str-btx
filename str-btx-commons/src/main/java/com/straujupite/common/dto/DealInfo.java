@@ -2,7 +2,7 @@ package com.straujupite.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.straujupite.common.util.DealStageDeserializer;
+import com.straujupite.common.util.deserializer.DealStageDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

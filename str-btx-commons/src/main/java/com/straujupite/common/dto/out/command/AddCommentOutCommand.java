@@ -3,7 +3,7 @@ package com.straujupite.common.dto.out.command;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.straujupite.common.dto.common.bitrix.BtxComment;
 import com.straujupite.common.dto.common.bitrix.EntityType;
-import com.straujupite.common.util.AddCommentOutSerializer;
+import com.straujupite.common.util.serializer.AddCommentOutSerializer;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

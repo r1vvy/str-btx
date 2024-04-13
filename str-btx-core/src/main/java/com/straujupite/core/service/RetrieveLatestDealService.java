@@ -5,11 +5,13 @@ import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
 import com.straujupite.out.adapter.RetrieveDealsAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Component
+@Service
 @RequiredArgsConstructor
+@Slf4j
 public class RetrieveLatestDealService {
 
 	private final RetrieveDealsAdapter retrieveDealsAdapter;
@@ -18,7 +20,13 @@ public class RetrieveLatestDealService {
 			String companyID) {
 		return retrieveDealsAdapter.retrieveDealsByCompanyId(companyID)
 															 .map(this::getLatestDeal)
-															 .map(context::withDealInfo);
+															 .doOnNext(deal -> log.debug("Retrieved latest deal: {}", deal))
+															 .map(context::withDealInfo)
+															 .onErrorResume(err -> {
+																 log.debug("Error while retrieving latest deal info: {}",
+																		 err.getMessage());
+																 return Mono.empty();
+															 }).defaultIfEmpty(context);
 	}
 
 	private DealInfo getLatestDeal(GetCompanyDealsOutResponse response) {

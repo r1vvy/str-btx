@@ -1,7 +1,6 @@
 package com.straujupite.common.config;
 
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +25,12 @@ public class WebClientConfiguration {
         return WebClient.builder()
                         .baseUrl(url)
                         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .codecs(configurer -> configurer.defaultCodecs()
-                                                        .jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper)))
-                        .codecs(configurer -> configurer.defaultCodecs()
-                                                        .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper)))
+                        .codecs(configurer -> {
+                          configurer.defaultCodecs()
+                                    .jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
+                          configurer.defaultCodecs()
+                                    .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
+                        })
                         .build();
     }
 }

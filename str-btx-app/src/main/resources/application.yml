@@ -5,7 +5,7 @@ spring:
 
 logging:
   level:
-    com.meawallet.weatherapp: DEBUG
+    com.straujupite: DEBUG
 
 server:
   error:

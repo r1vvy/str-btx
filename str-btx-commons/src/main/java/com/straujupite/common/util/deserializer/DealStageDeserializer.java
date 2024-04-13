@@ -1,4 +1,4 @@
-package com.straujupite.common.util;
+package com.straujupite.common.util.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

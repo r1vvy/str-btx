@@ -1,5 +1,6 @@
 package com.straujupite.common.dto.common.callInfo;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class CallInfo {
 
   @Valid
+  @JsonAlias({"callerid", "caller"})
   private Caller caller;
 
   @Valid
@@ -27,9 +29,10 @@ public class CallInfo {
   @JsonProperty("callEnded")
   private String callEndedDateTime;
 
-  @JsonProperty("lastContact")
+  @JsonProperty("last_contact")
   private String lastContactDateTime;
 
+  @JsonProperty("contact_name")
   private String contactName;
 
   private Integer connectionTime;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -14,7 +15,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AddCommentOutAdapter {
 
-  private static final String URI = "crm.timeline.comment.add";
+  private static final String URI = "/crm.timeline.comment.add";
 
   @Autowired
   private WebClient webClient;
@@ -22,19 +23,17 @@ public class AddCommentOutAdapter {
   public Mono<Void> addComment(AddCommentOutCommand command) {
     return webClient.post()
                     .uri(URI)
-                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(command))
                     .retrieve()
-                    .onStatus(this::isClientOrServerError, error -> createBitrixError("Could not add comment"))
+                    .onStatus(HttpStatusCode::isError, this::handleError)
                     .toBodilessEntity()
                     .then();
   }
 
-  private boolean isClientOrServerError(HttpStatusCode statusCode) {
-    return statusCode.is4xxClientError() || statusCode.is5xxServerError();
-  }
-
-  private Mono<Error> createBitrixError(String message) {
-    return Mono.error(new RuntimeException(message));
+  private Mono<Throwable> handleError(ClientResponse response) {
+    return response.bodyToMono(String.class)
+                   .flatMap(
+                       body -> Mono.error(new RuntimeException("Failed to add comment: " + body)));
   }
 }
