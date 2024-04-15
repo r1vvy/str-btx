@@ -14,7 +14,8 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class AddActivityAdapter {
-    private static final String URI = "crm.activity.todo.add?ownerTypeId=4&ownerId=%d&deadline=%s&description=%s";
+
+  private static final String URI = "/crm.activity.todo.add?ownerTypeId=2&ownerId=%s&deadline=%s&description=%s";
 
   @Autowired
   private WebClient webClient;
@@ -22,7 +23,8 @@ public class AddActivityAdapter {
   public Mono<Void> addActivity(AddActivityOutRequest addActivityOutRequest) {
 
         return webClient.get()
-                        .uri(String.format(URI, addActivityOutRequest.getCompanyID(),
+                        .uri(String.format(URI,
+                            addActivityOutRequest.getDealId(),
                             addActivityOutRequest.getDeadline(),
                             addActivityOutRequest.getDescription()))
                 .retrieve()

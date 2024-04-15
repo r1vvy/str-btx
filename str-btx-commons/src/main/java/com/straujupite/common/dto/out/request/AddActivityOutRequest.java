@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AddActivityOutRequest {
 
-  private final Integer companyID;
+  private final String dealId;
   private final String deadline;
   private final String description;
 }

@@ -16,11 +16,13 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 public abstract class ChangeDealStageFlowBase {
 
   protected static final String DEAL_ACTIVITY_OWNER_TYPE_ID = "2";
@@ -47,26 +49,27 @@ public abstract class ChangeDealStageFlowBase {
   }
 
   protected Mono<RetrieveCallInfoContext> getDealActivity(RetrieveCallInfoContext context) {
-    return Mono.justOrEmpty(context.getCompanyId())
-               .flatMap(companyId -> getActivityAdapter.getActivity(
-                       GetActivityOutRequest.builder()
-                                            .ownerId(companyId)
-                                            .ownerTypeId(DEAL_ACTIVITY_OWNER_TYPE_ID)
-                                            .build()
-                   )
-               ).map(context::withActivityInfo)
-               .defaultIfEmpty(context);
+    return Mono.justOrEmpty(context.getDealInfo())
+               .map(DealInfo::getId)
+               .map(this::buildGetActivityOutRequest)
+               .doOnNext(outRequest -> log.debug("About to call getActivity: {}", outRequest))
+               .flatMap(getActivityAdapter::getActivity)
+               .map(context::withActivityInfo)
+               .switchIfEmpty(
+                   Mono.error(new ActivityInfoNotFoundException("Couldn't get activity")));
 
   }
+
 
   protected Mono<RetrieveCallInfoContext> updateActivityDeadlineIfPresent(
       RetrieveCallInfoContext context, int daysToAddToDeadline) {
     return Mono.justOrEmpty(context.getActivityInfo())
-               .flatMap(activityInfo -> updateActivityAdapter.updateActivityDeadline(
-                   buildUpdateActivityDeadlineRequest(context, daysToAddToDeadline))
-               ).thenReturn(context)
-               .switchIfEmpty(Mono.error(new ActivityInfoNotFoundException(
-                   "Context doesn't contain ActivityInfo object")));
+               .map(
+                   activityInfo -> buildUpdateActivityDeadlineRequest(context, daysToAddToDeadline))
+               .doOnNext(
+                   outRequest -> log.debug("About to call updateActivityDeadline: {}", outRequest))
+               .flatMap(updateActivityAdapter::updateActivityDeadline)
+               .thenReturn(context);
   }
 
   protected UpdateActivityDeadlineOutRequest buildUpdateActivityDeadlineRequest(
@@ -84,16 +87,23 @@ public abstract class ChangeDealStageFlowBase {
   protected Mono<RetrieveCallInfoContext> addNewActivityToDeal(RetrieveCallInfoContext context,
       int deadline) {
     return Mono.justOrEmpty(context)
-               .flatMap(ctx -> addActivityAdapter.addActivity(
-                   buildAddActivityOutRequest(deadline,
-                       ctx)))
+               .map(ctx -> buildAddActivityOutRequest(deadline, ctx))
+               .doOnNext(outRequest -> log.debug("About to call addActivity: {}", outRequest))
+               .flatMap(addActivityAdapter::addActivity)
                .thenReturn(context);
+  }
+
+  private GetActivityOutRequest buildGetActivityOutRequest(String dealId) {
+    return GetActivityOutRequest.builder()
+                                .ownerId(dealId)
+                                .ownerTypeId(DEAL_ACTIVITY_OWNER_TYPE_ID)
+                                .build();
   }
 
   private AddActivityOutRequest buildAddActivityOutRequest(int deadline,
       RetrieveCallInfoContext ctx) {
     return AddActivityOutRequest.builder()
-                                .companyID(ctx.getCompanyId())
+                                .dealId(ctx.getDealInfo().getId())
                                 .description(ACTIVITY_DESCRIPTION)
                                 .deadline(createDeadlineByDayCount(deadline, getCurrentTime()))
                                 .build();

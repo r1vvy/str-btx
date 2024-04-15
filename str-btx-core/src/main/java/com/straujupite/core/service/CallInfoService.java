@@ -24,10 +24,10 @@ public class CallInfoService {
                .filter(ctx -> ctx.getCompanyId() != null)
                .doOnNext(ctx -> log.debug("Company ID is not null, continuing flow"))
                .flatMap(addCommentService::addComment)
-//               .flatMap(ctx -> retrieveLatestDealService.retrieveLatestDealInfo(ctx,
-//                   String.valueOf(ctx.getCompanyId())))
-//               .filter(ctx -> ctx.getDealInfo() != null)
-//               .flatMap(changeDealStageService::changeDealStageAndSetActivityIfRequired)
+               .flatMap(ctx -> retrieveLatestDealService.retrieveLatestDealInfo(ctx,
+                   String.valueOf(ctx.getCompanyId())))
+               .filter(ctx -> ctx.getDealInfo() != null)
+               .flatMap(changeDealStageService::changeDealStageAndSetActivityIfRequired)
                .then();
   }
 }

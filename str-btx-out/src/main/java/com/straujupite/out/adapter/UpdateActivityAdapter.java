@@ -6,13 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateActivityAdapter {
-  private static final String URI = "crm.activity.todo.updateDeadline?ownerTypeId=%s&ownerId=%s&id=%s&value=%s";
+
+  private static final String URI = "/crm.activity.todo.updateDeadline?ownerTypeId=%s"
+      + "&ownerId=%s"
+      + "&id=%s"
+      + "&value=%s";
 
   @Autowired
   private WebClient webClient;
@@ -22,9 +27,7 @@ public class UpdateActivityAdapter {
     return webClient.get()
                     .uri(formatURI(request))
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                        error -> Mono.error(
-                            new RuntimeException("Could not establish connection with Bitrix")))
+                    .onStatus(HttpStatusCode::isError, this::handleError)
                     .bodyToMono(UpdateActivityOutResponse.class);
   }
 
@@ -36,5 +39,11 @@ public class UpdateActivityAdapter {
         request.getId(),
         request.getUpdatedDeadline()
     );
+  }
+
+  private Mono<Throwable> handleError(ClientResponse response) {
+    return response.bodyToMono(String.class)
+                   .flatMap(
+                       body -> Mono.error(new RuntimeException("Failed to add comment: " + body)));
   }
 }

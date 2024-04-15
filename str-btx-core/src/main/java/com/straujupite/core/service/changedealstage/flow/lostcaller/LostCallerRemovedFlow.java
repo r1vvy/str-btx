@@ -8,11 +8,13 @@ import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlow;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlowBase;
 import com.straujupite.out.adapter.ChangeDealStageAdapter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LostCallerRemovedFlow extends ChangeDealStageFlowBase implements ChangeDealStageFlow {
 
   private final ChangeDealStageAdapter changeDealStageAdapter;
@@ -27,6 +29,7 @@ public class LostCallerRemovedFlow extends ChangeDealStageFlowBase implements Ch
   public Mono<Void> execute(RetrieveCallInfoContext context) {
     return Mono.fromSupplier(context.getDealInfo()::getId)
                .map(this::buildChangeDealStageOutRequest)
+               .doOnNext(outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest))
                .flatMap(changeDealStageAdapter::changeStage)
                .then();
   }

@@ -5,6 +5,7 @@ import com.straujupite.common.dto.BitrixError;
 import com.straujupite.common.dto.out.request.GetActivityOutRequest;
 import com.straujupite.common.dto.out.response.GetActivityOutResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatusCode;
@@ -14,8 +15,12 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GetActivityAdapter {
-  private static final String URI = "crm.activity.list?filter[OWNER_TYPE_ID]=%s&filter[OWNER_ID]=%s";
+
+  private static final String URI = "/crm.activity.list?filter[OWNER_TYPE_ID]=%s"
+      + "&filter[OWNER_ID]=%s"
+      + "&filter[COMPLETED]=N";
 
   @Autowired
   private WebClient webClient;

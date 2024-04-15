@@ -1,5 +1,8 @@
 package com.straujupite.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum DealStage {
 
     NEW_DEAL("NEW"),
@@ -13,20 +16,25 @@ public enum DealStage {
     SUCCESSFUL_DEAL("WON"),
     FAILED_DEAL("LOSE");
 
-    private final String stage;
+  private final String value;
 
     DealStage(String stage) {
-        this.stage = stage;
+      this.value = stage;
     }
 
-    public static DealStage getDealStage(String stage) {
-        for (DealStage deal : DealStage.values()) {
-            if (deal.stage.equalsIgnoreCase(stage)) {
-                return deal;
+  @JsonCreator
+  public static DealStage fromValue(String value) {
+    for (DealStage type : DealStage.values()) {
+      if (type.getValue().equalsIgnoreCase(value)) {
+        return type;
             }
         }
-        return null;
+    throw new IllegalArgumentException("Unknown DealStage: " + value);
+  }
 
+  @JsonValue
+  public String getValue() {
+    return value;
     }
 
 }
