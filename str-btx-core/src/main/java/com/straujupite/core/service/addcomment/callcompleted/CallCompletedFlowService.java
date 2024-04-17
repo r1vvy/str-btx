@@ -44,12 +44,9 @@ public class CallCompletedFlowService implements AddCommentEventTypeFlow {
 
   private Mono<BtxComment> createCommentDirectionIn(RetrieveCallInfoContext context) {
     return Mono.justOrEmpty(context.getRetrieveCallInfoCommand())
-               .doOnNext(cmd -> log.debug("Creating comment from direction: {}",
-                   cmd.getCallInfo().getDirection()))
                .filter(this::isCallSuccessful)
                .map(cmd -> buildCommentByTemplate(CALL_SUCCESSFUL_TEMPLATE, context))
-               .doOnNext(comment -> log.debug("Created comment: {}", comment))
-               .defaultIfEmpty(new BtxComment(null));
+               .doOnNext(comment -> log.debug("Created comment: {}", comment));
   }
 
   private boolean isCallSuccessful(RetrieveCallInfoCommand command) {

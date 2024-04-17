@@ -13,11 +13,13 @@ import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlow;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlowBase;
 import com.straujupite.out.adapter.ChangeDealStageAdapter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlowBase implements
     ChangeDealStageFlow {
 
@@ -56,14 +58,16 @@ public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlow
                  case DIDNT_PICKUP -> DIDNT_PICKUP_AND_SMS;
                  case DIDNT_PICKUP_AND_SMS -> DealStage.DIDNT_PICKUP_AND_EMAIL;
                  default -> DIDNT_PICKUP;
-               }).map(context::withNewStage)
+               }).doOnNext(newStage -> log.debug("Next not answered stage: {}", newStage))
+               .map(context::withNewStage)
                .defaultIfEmpty(context);
   }
 
   private Mono<RetrieveCallInfoContext> changeStage(RetrieveCallInfoContext context) {
     return Mono.justOrEmpty(context.getNewStage())
-               .flatMap(newStage -> changeDealStageAdapter.changeStage(
-                   buildChangeDealStageOutRequest(context, newStage)))
+               .map(newStage -> buildChangeDealStageOutRequest(context, newStage))
+               .doOnNext(outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest))
+               .flatMap(changeDealStageAdapter::changeStage)
                .thenReturn(context)
                .defaultIfEmpty(context);
   }

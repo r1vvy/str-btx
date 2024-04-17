@@ -1,6 +1,7 @@
 package com.straujupite.core.service.changedealstage;
 
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
+import com.straujupite.common.error.changedealstage.FlowNotFoundException;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlow;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,15 @@ public class ChangeDealStageService {
     return Mono.justOrEmpty(context)
                .map(this::findFlow)
                .flatMap(eventTypeFlow -> eventTypeFlow.execute(context))
-               .thenReturn(context);
+               .thenReturn(context)
+               .onErrorResume(FlowNotFoundException.class, err -> Mono.just(context));
   }
 
   private ChangeDealStageFlow findFlow(RetrieveCallInfoContext context) {
     return eventFlows.stream()
                      .filter(flow -> flow.isSupported(context))
                      .findFirst()
-                     .orElseThrow(() -> new RuntimeException("Couldn't find supported flow"));
+                     .orElseThrow(() -> new FlowNotFoundException("Couldn't find supported flow"));
   }
 
 }

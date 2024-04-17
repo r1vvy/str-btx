@@ -26,8 +26,6 @@ public class AddCommentService {
 
   public Mono<RetrieveCallInfoContext> addComment(RetrieveCallInfoContext context) {
     return Mono.fromSupplier(() -> findFlow(context.getRetrieveCallInfoCommand().getEventType()))
-               .doOnNext(flow -> log.debug("Executing addComment flow: {}",
-                   flow.getClass().getCanonicalName()))
                .flatMap(eventFlow -> eventFlow.createComment(context))
                .map(comment -> createOutCommand(context, comment))
                .doOnNext(cmd -> log.debug("About to call addComment: {}", cmd))

@@ -11,7 +11,8 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class RetrieveDealsAdapter {
-  private static final String URI = "crm.deal.list.json?FILTER[COMPANY_ID]=%s&ORDER[DATE_CREATE]=DESC&FILTER[STAGE_SEMANTIC_ID]=P";
+
+  private static final String URI = "/crm.deal.list.json?FILTER[COMPANY_ID]=%s&ORDER[DATE_CREATE]=DESC&FILTER[STAGE_SEMANTIC_ID]=P";
 
   @Autowired
   private WebClient webClient;

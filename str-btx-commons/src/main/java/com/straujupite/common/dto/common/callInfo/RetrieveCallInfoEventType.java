@@ -23,7 +23,7 @@ public enum RetrieveCallInfoEventType {
   }
 
   @JsonCreator
-  public static RetrieveCallInfoEventType forValue(String value) {
+  public static RetrieveCallInfoEventType fromValue(String value) {
     for (RetrieveCallInfoEventType type : RetrieveCallInfoEventType.values()) {
       if (type.getValue().equalsIgnoreCase(value)) {
         return type;

@@ -8,5 +8,5 @@ import lombok.Data;
 public class GetActivityOutRequest {
 
   private final String ownerTypeId;
-  private final Integer ownerId;
+  private final String ownerId;
 }
