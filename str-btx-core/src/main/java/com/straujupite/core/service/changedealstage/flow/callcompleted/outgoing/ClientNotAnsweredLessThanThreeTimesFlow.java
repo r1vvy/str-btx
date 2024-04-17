@@ -11,7 +11,7 @@ import com.straujupite.common.dto.out.request.ChangeDealStageOutRequest;
 import com.straujupite.common.error.changedealstage.ActivityInfoNotFoundException;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlow;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlowBase;
-import com.straujupite.out.adapter.ChangeDealStageAdapter;
+import com.straujupite.out.adapter.BitrixAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlowBase implements
     ChangeDealStageFlow {
 
-  private final ChangeDealStageAdapter changeDealStageAdapter;
+  private final BitrixAdapter bitrixAdapter;
 
   @Override
   public boolean isSupported(RetrieveCallInfoContext context) {
@@ -67,7 +67,7 @@ public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlow
     return Mono.justOrEmpty(context.getNewStage())
                .map(newStage -> buildChangeDealStageOutRequest(context, newStage))
                .doOnNext(outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest))
-               .flatMap(changeDealStageAdapter::changeStage)
+               .flatMap(bitrixAdapter::changeStage)
                .thenReturn(context)
                .defaultIfEmpty(context);
   }

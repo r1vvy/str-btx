@@ -1,7 +1,7 @@
 package com.straujupite.common.util.addcomment;
 
 import static com.straujupite.common.util.DefaultDateTimeFormatter.DATE_FORMATTER;
-import static com.straujupite.common.util.DefaultDateTimeFormatter.FORMATTER;
+import static com.straujupite.common.util.DefaultDateTimeFormatter.FORMATTER_WITH_TIMEZONE;
 import static com.straujupite.common.util.DefaultDateTimeFormatter.TIME_FORMATTER;
 
 import com.straujupite.common.dto.common.bitrix.BtxComment;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class CommentBuilder {
 
   public BtxComment buildCommentByTemplate(String template, String dateTime, Object... fields) {
-    var parsedDateTime = ZonedDateTime.parse(dateTime, FORMATTER);
+    var parsedDateTime = ZonedDateTime.parse(dateTime, FORMATTER_WITH_TIMEZONE);
     var date = parsedDateTime.format(DATE_FORMATTER);
     var time = parsedDateTime.format(TIME_FORMATTER);
 

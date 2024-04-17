@@ -1,14 +1,15 @@
 package com.straujupite.common.dto.common;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
-public class RequestId {
+@AllArgsConstructor
+public class PhoneNumber {
 
+  @Valid
   @NotBlank
   private String value;
-
 }

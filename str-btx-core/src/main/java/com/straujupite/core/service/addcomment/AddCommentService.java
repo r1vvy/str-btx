@@ -6,7 +6,7 @@ import com.straujupite.common.dto.common.bitrix.EntityType;
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.out.command.AddCommentOutCommand;
-import com.straujupite.out.adapter.AddCommentOutAdapter;
+import com.straujupite.out.adapter.BitrixAdapter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +22,14 @@ public class AddCommentService {
   @Autowired
   private List<AddCommentEventTypeFlow> eventFlows;
 
-  private final AddCommentOutAdapter addCommentAdapter;
+  private final BitrixAdapter bitrixAdapter;
 
   public Mono<RetrieveCallInfoContext> addComment(RetrieveCallInfoContext context) {
     return Mono.fromSupplier(() -> findFlow(context.getRetrieveCallInfoCommand().getEventType()))
                .flatMap(eventFlow -> eventFlow.createComment(context))
                .map(comment -> createOutCommand(context, comment))
                .doOnNext(cmd -> log.debug("About to call addComment: {}", cmd))
-               .flatMap(addCommentAdapter::addComment)
+               .flatMap(bitrixAdapter::addComment)
                .onErrorResume(err -> {
                  log.debug("Error while adding comment: {}", err.getMessage());
                  return Mono.empty();

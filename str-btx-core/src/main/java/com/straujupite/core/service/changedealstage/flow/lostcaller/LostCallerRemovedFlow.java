@@ -6,7 +6,7 @@ import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.out.request.ChangeDealStageOutRequest;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlow;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlowBase;
-import com.straujupite.out.adapter.ChangeDealStageAdapter;
+import com.straujupite.out.adapter.BitrixAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class LostCallerRemovedFlow extends ChangeDealStageFlowBase implements ChangeDealStageFlow {
 
-  private final ChangeDealStageAdapter changeDealStageAdapter;
+  private final BitrixAdapter bitrixAdapter;
 
   @Override
   public boolean isSupported(RetrieveCallInfoContext context) {
@@ -30,7 +30,7 @@ public class LostCallerRemovedFlow extends ChangeDealStageFlowBase implements Ch
     return Mono.fromSupplier(context.getDealInfo()::getId)
                .map(this::buildChangeDealStageOutRequest)
                .doOnNext(outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest))
-               .flatMap(changeDealStageAdapter::changeStage)
+               .flatMap(bitrixAdapter::changeStage)
                .then();
   }
 

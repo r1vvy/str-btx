@@ -1,8 +1,9 @@
 package com.straujupite.core.service;
 
+import com.straujupite.common.dto.common.PhoneNumber;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
-import com.straujupite.out.adapter.RetrieveCompanyInfoAdapter;
+import com.straujupite.out.adapter.BitrixAdapter;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ public class CompanyInfoService {
 
     private static final String COUNTRY_CODE = "+371";
 
-    private final RetrieveCompanyInfoAdapter retrieveCompanyInfoAdapter;
+    private final BitrixAdapter bitrixAdapter;
 
     public Mono<RetrieveCallInfoContext> getCompanyIdByPhoneNumber(RetrieveCallInfoContext context,
         String phoneNumber) {
@@ -24,9 +25,9 @@ public class CompanyInfoService {
                    .filter(this::hasCountryCode)
                    .switchIfEmpty(addCountryCode(phoneNumber, COUNTRY_CODE))
                    .doOnNext(
-                       num -> log.info("About to call retrieveCompanyIdByPhoneNumber: {}", num))
-                   .flatMap(retrieveCompanyInfoAdapter::retrieveCompanyIdByPhoneNumber)
-                   .doOnNext(response -> log.debug("Response: {}", response))
+                       num -> log.info("About to call retrieveCompanyIdByPhoneNumber: {}", num)
+                   ).map(PhoneNumber::new)
+                   .flatMap(bitrixAdapter::retrieveCompanyIdByPhoneNumber)
                    .map(this::getCompanyId)
                    .filter(Optional::isPresent)
                    .map(Optional::get)
