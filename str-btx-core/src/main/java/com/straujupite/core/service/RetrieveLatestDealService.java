@@ -1,9 +1,10 @@
 package com.straujupite.core.service;
 
 import com.straujupite.common.dto.DealInfo;
+import com.straujupite.common.dto.common.bitrix.CompanyId;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
-import com.straujupite.out.adapter.RetrieveDealsAdapter;
+import com.straujupite.out.adapter.BitrixAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,19 +15,21 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class RetrieveLatestDealService {
 
-	private final RetrieveDealsAdapter retrieveDealsAdapter;
+	private final BitrixAdapter bitrixAdapter;
 
 	public Mono<RetrieveCallInfoContext> retrieveLatestDealInfo(RetrieveCallInfoContext context,
-			String companyID) {
-		return retrieveDealsAdapter.retrieveDealsByCompanyId(companyID)
-															 .map(this::getLatestDeal)
-															 .doOnNext(deal -> log.debug("Retrieved latest deal: {}", deal))
-															 .map(context::withDealInfo)
-															 .onErrorResume(err -> {
-																 log.debug("Error while retrieving latest deal info: {}",
-																		 err.getMessage());
-																 return Mono.empty();
-															 }).defaultIfEmpty(context);
+			String companyId) {
+		return Mono.justOrEmpty(companyId)
+							 .map(CompanyId::new)
+							 .flatMap(bitrixAdapter::retrieveDealsByCompanyId)
+							 .map(this::getLatestDeal)
+							 .doOnNext(deal -> log.debug("Retrieved latest deal: {}", deal))
+							 .map(context::withDealInfo)
+							 .onErrorResume(err -> {
+								 log.debug("Error while retrieving latest deal info: {}",
+										 err.getMessage());
+								 return Mono.empty();
+							 }).defaultIfEmpty(context);
 	}
 
 	private DealInfo getLatestDeal(GetCompanyDealsOutResponse response) {

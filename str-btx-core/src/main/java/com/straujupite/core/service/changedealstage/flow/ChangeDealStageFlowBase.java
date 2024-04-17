@@ -8,9 +8,7 @@ import com.straujupite.common.dto.out.request.GetActivityOutRequest;
 import com.straujupite.common.dto.out.request.UpdateActivityDeadlineOutRequest;
 import com.straujupite.common.error.changedealstage.ActivityInfoNotFoundException;
 import com.straujupite.common.util.DefaultDateTimeFormatter;
-import com.straujupite.out.adapter.AddActivityAdapter;
-import com.straujupite.out.adapter.GetActivityAdapter;
-import com.straujupite.out.adapter.UpdateActivityAdapter;
+import com.straujupite.out.adapter.BitrixAdapter;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -34,18 +32,15 @@ public abstract class ChangeDealStageFlowBase {
   );
 
   @Autowired
-  protected UpdateActivityAdapter updateActivityAdapter;
-  @Autowired
-  protected GetActivityAdapter getActivityAdapter;
-  @Autowired
-  private AddActivityAdapter addActivityAdapter;
+  protected BitrixAdapter bitrixAdapter;
+
 
 
   protected String createDeadlineByDayCount(int daysToAdd, String currentDeadline) {
     var deadline = OffsetDateTime.parse(currentDeadline);
 
     return deadline.plusDays(daysToAdd)
-                   .format(DefaultDateTimeFormatter.FORMATTER);
+                   .format(DefaultDateTimeFormatter.FORMATTER_WITHOUT_TIMEZONE);
   }
 
   protected Mono<RetrieveCallInfoContext> getDealActivity(RetrieveCallInfoContext context) {
@@ -53,7 +48,7 @@ public abstract class ChangeDealStageFlowBase {
                .map(DealInfo::getId)
                .map(this::buildGetActivityOutRequest)
                .doOnNext(outRequest -> log.debug("About to call getActivity: {}", outRequest))
-               .flatMap(getActivityAdapter::getActivity)
+               .flatMap(bitrixAdapter::getActivity)
                .map(context::withActivityInfo)
                .switchIfEmpty(
                    Mono.error(new ActivityInfoNotFoundException("Couldn't get activity")));
@@ -68,7 +63,7 @@ public abstract class ChangeDealStageFlowBase {
                    activityInfo -> buildUpdateActivityDeadlineRequest(context, daysToAddToDeadline))
                .doOnNext(
                    outRequest -> log.debug("About to call updateActivityDeadline: {}", outRequest))
-               .flatMap(updateActivityAdapter::updateActivityDeadline)
+               .flatMap(bitrixAdapter::updateActivityDeadline)
                .thenReturn(context);
   }
 
@@ -89,7 +84,7 @@ public abstract class ChangeDealStageFlowBase {
     return Mono.justOrEmpty(context)
                .map(ctx -> buildAddActivityOutRequest(deadline, ctx))
                .doOnNext(outRequest -> log.debug("About to call addActivity: {}", outRequest))
-               .flatMap(addActivityAdapter::addActivity)
+               .flatMap(bitrixAdapter::addActivity)
                .thenReturn(context);
   }
 
