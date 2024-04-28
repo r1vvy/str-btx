@@ -1,5 +1,7 @@
 package com.straujupite.core.service.addcomment.callcompleted;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.common.bitrix.BtxComment;
 import com.straujupite.common.dto.common.callInfo.CallDirection;
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
@@ -38,7 +40,7 @@ public class CallCompletedFlowService implements AddCommentEventTypeFlow {
     return Mono.justOrEmpty(context.getRetrieveCallInfoCommand())
                .filter(this::isCallSuccessful)
                .map(cmd -> buildCommentByTemplate(CALL_SUCCESSFUL_TEMPLATE, context))
-               .doOnNext(comment -> log.debug("Created comment: {}", comment))
+               .doOnEach(logOnNext(comment -> log.debug("Created comment: {}", comment)))
                .switchIfEmpty(Mono.fromCallable(() -> buildCommentByTemplate(CALL_UNSUCCESSFUL_TEMPLATE, context)));
   }
 
@@ -46,7 +48,7 @@ public class CallCompletedFlowService implements AddCommentEventTypeFlow {
     return Mono.justOrEmpty(context.getRetrieveCallInfoCommand())
                .filter(this::isCallSuccessful)
                .map(cmd -> buildCommentByTemplate(CALL_SUCCESSFUL_TEMPLATE, context))
-               .doOnNext(comment -> log.debug("Created comment: {}", comment));
+               .doOnEach(logOnNext(comment -> log.debug("Created comment: {}", comment)));
   }
 
   private boolean isCallSuccessful(RetrieveCallInfoCommand command) {

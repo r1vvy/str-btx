@@ -1,4 +1,4 @@
-package com.straujupite.common.util;
+package com.straujupite.common.util.formatter;
 
 import java.time.format.DateTimeFormatter;
 

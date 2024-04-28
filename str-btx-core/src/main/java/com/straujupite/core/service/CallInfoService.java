@@ -1,5 +1,7 @@
 package com.straujupite.core.service;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.in.command.RetrieveCallInfoCommand;
@@ -32,7 +34,7 @@ public class CallInfoService {
                .filter(ctx -> isNotIgnoredEvent(ctx.getRetrieveCallInfoCommand()))
                .flatMap(clientInfoService::getByPhoneNumber)
                .filter(ctx -> ctx.getCompanyId() != null)
-               .doOnNext(ctx -> log.debug("Company ID is not null, continuing flow"))
+               .doOnEach(logOnNext(ctx -> log.debug("Company ID is not null, continuing flow")))
                .flatMap(addCommentService::addComment)
                .flatMap(ctx -> retrieveLatestDealService.retrieveLatestDealInfo(ctx,
                    String.valueOf(ctx.getCompanyId())))

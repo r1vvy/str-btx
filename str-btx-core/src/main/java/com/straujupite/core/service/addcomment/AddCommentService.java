@@ -1,6 +1,8 @@
 package com.straujupite.core.service.addcomment;
 
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.common.bitrix.BtxComment;
 import com.straujupite.common.dto.common.bitrix.EntityType;
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
@@ -28,7 +30,7 @@ public class AddCommentService {
     return Mono.fromSupplier(() -> findFlow(context.getRetrieveCallInfoCommand().getEventType()))
                .flatMap(eventFlow -> eventFlow.createComment(context))
                .map(comment -> createOutCommand(context, comment))
-               .doOnNext(cmd -> log.debug("About to call addComment: {}", cmd))
+               .doOnEach(logOnNext(cmd -> log.debug("About to call addComment: {}", cmd)))
                .flatMap(bitrixAdapter::addComment)
                .onErrorResume(err -> {
                  log.debug("Error while adding comment: {}", err.getMessage());

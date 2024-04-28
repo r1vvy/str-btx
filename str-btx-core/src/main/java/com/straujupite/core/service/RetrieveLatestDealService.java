@@ -1,5 +1,8 @@
 package com.straujupite.core.service;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnError;
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.common.bitrix.CompanyId;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
@@ -23,13 +26,12 @@ public class RetrieveLatestDealService {
 							 .map(CompanyId::new)
 							 .flatMap(bitrixAdapter::retrieveDealsByCompanyId)
 							 .map(this::getLatestDeal)
-							 .doOnNext(deal -> log.debug("Retrieved latest deal: {}", deal))
+							 .doOnEach(logOnNext(deal -> log.debug("Retrieved latest deal: {}", deal)))
 							 .map(context::withDealInfo)
-							 .onErrorResume(err -> {
-								 log.debug("Error while retrieving latest deal info: {}",
-										 err.getMessage());
-								 return Mono.empty();
-							 }).defaultIfEmpty(context);
+							 .doOnEach(logOnError(err -> log.debug("Error while retrieving latest deal info: {}",
+									 err.getMessage())))
+							 .onErrorResume(err -> Mono.empty())
+							 .defaultIfEmpty(context);
 	}
 
 	private DealInfo getLatestDeal(GetCompanyDealsOutResponse response) {
