@@ -2,6 +2,7 @@ package com.straujupite.core.service.changedealstage.flow.callcompleted.outgoing
 
 import static com.straujupite.common.dto.DealStage.DIDNT_PICKUP;
 import static com.straujupite.common.dto.DealStage.DIDNT_PICKUP_AND_SMS;
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
 
 import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.DealStage;
@@ -58,7 +59,8 @@ public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlow
                  case DIDNT_PICKUP -> DIDNT_PICKUP_AND_SMS;
                  case DIDNT_PICKUP_AND_SMS -> DealStage.DIDNT_PICKUP_AND_EMAIL;
                  default -> DIDNT_PICKUP;
-               }).doOnNext(newStage -> log.debug("Next not answered stage: {}", newStage))
+               })
+               .doOnEach(logOnNext(newStage -> log.debug("Next not answered stage: {}", newStage)))
                .map(context::withNewStage)
                .defaultIfEmpty(context);
   }
@@ -66,7 +68,8 @@ public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlow
   private Mono<RetrieveCallInfoContext> changeStage(RetrieveCallInfoContext context) {
     return Mono.justOrEmpty(context.getNewStage())
                .map(newStage -> buildChangeDealStageOutRequest(context, newStage))
-               .doOnNext(outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest))
+               .doOnEach(logOnNext(
+                   outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest)))
                .flatMap(bitrixAdapter::changeStage)
                .thenReturn(context)
                .defaultIfEmpty(context);

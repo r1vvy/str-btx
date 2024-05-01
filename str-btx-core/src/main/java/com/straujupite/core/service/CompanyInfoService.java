@@ -1,5 +1,7 @@
 package com.straujupite.core.service;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.common.PhoneNumber;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
@@ -24,14 +26,15 @@ public class CompanyInfoService {
         return Mono.justOrEmpty(phoneNumber)
                    .filter(this::hasCountryCode)
                    .switchIfEmpty(addCountryCode(phoneNumber, COUNTRY_CODE))
-                   .doOnNext(
-                       num -> log.info("About to call retrieveCompanyIdByPhoneNumber: {}", num)
-                   ).map(PhoneNumber::new)
+                   .doOnEach(logOnNext(
+                       num -> log.info("About to call retrieveCompanyIdByPhoneNumber: {}", num)))
+                   .map(PhoneNumber::new)
                    .flatMap(bitrixAdapter::retrieveCompanyIdByPhoneNumber)
                    .map(this::getCompanyId)
                    .filter(Optional::isPresent)
                    .map(Optional::get)
-                   .doOnNext(companyId -> log.debug("Retrieved companyId: {}", companyId))
+                   .doOnEach(
+                       logOnNext(companyId -> log.debug("Retrieved companyId: {}", companyId)))
                    .map(context::withCompanyId);
     }
 

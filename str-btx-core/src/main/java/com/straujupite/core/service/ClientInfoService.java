@@ -1,5 +1,7 @@
 package com.straujupite.core.service;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.common.callInfo.CallDirection;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,9 @@ public class ClientInfoService {
         return Mono.justOrEmpty(context)
                    .map(ctx -> ctx.withStrNumber(
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))
-                   .doOnNext(ctx -> log.debug("Straujupite phone number from destination: {}",
-                       ctx.getStrNumber()))
+                   .doOnEach(
+                       logOnNext(ctx -> log.debug("Straujupite phone number from destination: {}",
+                           ctx.getStrNumber())))
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(ctx,
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
                    .map(ctx -> ctx.withCompanyPhoneNumber(
@@ -36,8 +39,8 @@ public class ClientInfoService {
         return Mono.justOrEmpty(context)
                    .map(ctx -> ctx.withStrNumber(
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
-                   .doOnNext(ctx -> log.debug("Straujupite phone number from caller: {}",
-                       ctx.getStrNumber()))
+                   .doOnEach(logOnNext(ctx -> log.debug("Straujupite phone number from caller: {}",
+                       ctx.getStrNumber())))
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(ctx,
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))
                    .map(ctx -> ctx.withCompanyPhoneNumber(

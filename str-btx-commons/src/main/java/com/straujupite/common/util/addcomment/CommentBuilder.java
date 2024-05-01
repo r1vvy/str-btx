@@ -1,8 +1,8 @@
 package com.straujupite.common.util.addcomment;
 
-import static com.straujupite.common.util.DefaultDateTimeFormatter.DATE_FORMATTER;
-import static com.straujupite.common.util.DefaultDateTimeFormatter.FORMATTER_WITH_TIMEZONE;
-import static com.straujupite.common.util.DefaultDateTimeFormatter.TIME_FORMATTER;
+import static com.straujupite.common.util.formatter.DefaultDateTimeFormatter.DATE_FORMATTER;
+import static com.straujupite.common.util.formatter.DefaultDateTimeFormatter.FORMATTER_WITH_TIMEZONE;
+import static com.straujupite.common.util.formatter.DefaultDateTimeFormatter.TIME_FORMATTER;
 
 import com.straujupite.common.dto.common.bitrix.BtxComment;
 import java.time.ZonedDateTime;

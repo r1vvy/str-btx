@@ -1,6 +1,8 @@
 package com.straujupite.in.controller;
 
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.in.command.RetrieveCallInfoCommand;
 import com.straujupite.core.service.CallInfoService;
@@ -27,7 +29,7 @@ public class RetrieveCallInfoController {
   public Mono<ResponseEntity<Void>> retrieveCallInfo(
       @RequestBody @Valid RetrieveCallInfoCommand command) {
     return Mono.just(command)
-               .doOnNext(cmd -> log.info("Received command: {}", cmd))
+               .doOnEach(logOnNext(cmd -> log.info("Received command: {}", cmd)))
                .map(this::createContextFromCommand)
                .flatMap(callInfoService::retrieveCallInfo)
                .thenReturn(ResponseEntity.ok().build());

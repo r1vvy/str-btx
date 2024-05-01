@@ -1,5 +1,7 @@
 package com.straujupite.core.service.changedealstage.flow.lostcaller;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.DealStage;
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
@@ -29,7 +31,8 @@ public class LostCallerRemovedFlow extends ChangeDealStageFlowBase implements Ch
   public Mono<Void> execute(RetrieveCallInfoContext context) {
     return Mono.fromSupplier(context.getDealInfo()::getId)
                .map(this::buildChangeDealStageOutRequest)
-               .doOnNext(outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest))
+               .doOnEach(logOnNext(
+                   outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest)))
                .flatMap(bitrixAdapter::changeStage)
                .then();
   }

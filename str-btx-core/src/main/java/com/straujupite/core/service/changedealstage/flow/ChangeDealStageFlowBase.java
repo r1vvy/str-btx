@@ -1,5 +1,7 @@
 package com.straujupite.core.service.changedealstage.flow;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.DealStage;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
@@ -7,7 +9,7 @@ import com.straujupite.common.dto.out.request.AddActivityOutRequest;
 import com.straujupite.common.dto.out.request.GetActivityOutRequest;
 import com.straujupite.common.dto.out.request.UpdateActivityDeadlineOutRequest;
 import com.straujupite.common.error.changedealstage.ActivityInfoNotFoundException;
-import com.straujupite.common.util.DefaultDateTimeFormatter;
+import com.straujupite.common.util.formatter.DefaultDateTimeFormatter;
 import com.straujupite.out.adapter.BitrixAdapter;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -47,7 +49,8 @@ public abstract class ChangeDealStageFlowBase {
     return Mono.justOrEmpty(context.getDealInfo())
                .map(DealInfo::getId)
                .map(this::buildGetActivityOutRequest)
-               .doOnNext(outRequest -> log.debug("About to call getActivity: {}", outRequest))
+               .doOnEach(
+                   logOnNext(outRequest -> log.debug("About to call getActivity: {}", outRequest)))
                .flatMap(bitrixAdapter::getActivity)
                .map(context::withActivityInfo)
                .switchIfEmpty(
@@ -61,8 +64,8 @@ public abstract class ChangeDealStageFlowBase {
     return Mono.justOrEmpty(context.getActivityInfo())
                .map(
                    activityInfo -> buildUpdateActivityDeadlineRequest(context, daysToAddToDeadline))
-               .doOnNext(
-                   outRequest -> log.debug("About to call updateActivityDeadline: {}", outRequest))
+               .doOnEach(logOnNext(
+                   outRequest -> log.debug("About to call updateActivityDeadline: {}", outRequest)))
                .flatMap(bitrixAdapter::updateActivityDeadline)
                .thenReturn(context);
   }
@@ -83,7 +86,8 @@ public abstract class ChangeDealStageFlowBase {
       int deadline) {
     return Mono.justOrEmpty(context)
                .map(ctx -> buildAddActivityOutRequest(deadline, ctx))
-               .doOnNext(outRequest -> log.debug("About to call addActivity: {}", outRequest))
+               .doOnEach(
+                   logOnNext(outRequest -> log.debug("About to call addActivity: {}", outRequest)))
                .flatMap(bitrixAdapter::addActivity)
                .thenReturn(context);
   }
