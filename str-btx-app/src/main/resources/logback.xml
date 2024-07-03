@@ -9,14 +9,5 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <!-- todo: add google cloud logback -->
-<!--  <appender name="CLOUD" class="com.google.cloud.logging.logback.LoggingAppender">-->
-<!--    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
-<!--      <level>INFO</level>-->
-<!--    </filter>-->
-<!--  </appender>-->
-
-<!--  <root level="info">-->
-<!--    <appender-ref ref="CLOUD" />-->
-<!--  </root>-->
+  <logger level="DEBUG" name="com.straujupite"/>
 </configuration>

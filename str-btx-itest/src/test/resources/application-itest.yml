@@ -1,6 +1,12 @@
 spring:
-  profiles:
-    active: itest
+  config:
+    activate:
+      on-profile: itest
+
+logging:
+  level:
+    com.straujupite: DEBUG
+  config: classpath:logback.xml
 
 path:
-  web-client-url: localhost/bitrix
+  web-client-url: http://localhost:1337/

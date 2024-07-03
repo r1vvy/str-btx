@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/crm.timeline.comment.add",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.fields.ENTITY_ID"
+      },
+      {
+        "matchesJsonPath": "$.fields.ENTITY_TYPE"
+      }
+    ]
+  }
+}

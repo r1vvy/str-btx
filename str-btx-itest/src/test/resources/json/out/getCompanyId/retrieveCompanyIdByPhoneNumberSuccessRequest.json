@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/crm.duplicate.findbycomm.json",
+    "queryParameters": {
+      "entity_type": {
+        "equalTo": "COMPANY"
+      },
+      "type": {
+        "equalTo": "PHONE"
+      },
+      "values[]": {
+        "anything": "true"
+      }
+    }
+  }
+}

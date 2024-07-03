@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/crm.deal.list.json",
+    "queryParameters": {
+      "FILTER[COMPANY_ID]": {
+        "anything": "true"
+      },
+      "ORDER[DATE_CREATE]": {
+        "anything": "true"
+      },
+      "FILTER[STAGE_SEMANTIC_ID]": {
+        "anything": "true"
+      }
+    }
+  }
+}
