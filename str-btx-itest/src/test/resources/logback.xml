@@ -1,0 +1,15 @@
+<configuration>
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="STDOUT">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [level=%level] [thread=%thread] [traceId=%X{traceId}]
+        %logger{36}: %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <logger level="DEBUG" name="com.straujupite"/>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>

@@ -6,9 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan("com.straujupite")
-public class MockApplication {
+public class TestApplication {
 
   public static void main(String[] args) {
-    new SpringApplicationBuilder(MockApplication.class).run(args);
+    new SpringApplicationBuilder(TestApplication.class).run(args);
   }
 }

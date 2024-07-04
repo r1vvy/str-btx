@@ -1,5 +1,7 @@
 dependencies {
     implementation(project(":str-btx-in"))
+    implementation(project(":str-btx-out"))
+    implementation(project(":str-btx-commons"))
     implementation(project(":str-btx-core"))
 
     testImplementation(libs.mockito.core)
@@ -10,4 +12,6 @@ dependencies {
     testImplementation(libs.junitEngine)
     testImplementation(libs.jsonpath)
     testImplementation(libs.jsonassert)
+    testImplementation(libs.wiremock)
+    testImplementation(libs.reactor.test)
 }

@@ -1,0 +1,18 @@
+{
+  "type": "Event",
+  "eventType": "CallCompleted",
+  "version": "v1",
+  "data": {
+    "callID": 1710324988274663,
+    "caller": "12345678",
+    "destination": "87654321",
+    "contactID": 12345,
+    "callStarted": "2024-03-13T10:16:28+0000",
+    "callConnected": null,
+    "callEnded": "2024-03-13T10:17:18+0000",
+    "direction": "out",
+    "connectionTime": 0,
+    "status": 4,
+    "previous_contactID": null
+  }
+}

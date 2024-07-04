@@ -1,0 +1,21 @@
+{
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "result": [],
+      "time": {
+        "start": 1720004054.815748,
+        "finish": 1720004054.8433681,
+        "duration": 0.027620077133178711,
+        "processing": 0.0028150081634521484,
+        "date_start": "2024-07-03T13:54:14+03:00",
+        "date_finish": "2024-07-03T13:54:14+03:00",
+        "operating_reset_at": 1720004654,
+        "operating": 0
+      }
+    }
+  }
+}

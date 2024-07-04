@@ -6,6 +6,7 @@ spring:
 logging:
   level:
     com.straujupite: DEBUG
+  config: classpath:logback.xml
 
 server:
   error:
