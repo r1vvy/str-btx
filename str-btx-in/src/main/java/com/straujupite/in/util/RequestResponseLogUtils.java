@@ -4,7 +4,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -28,22 +27,13 @@ public class RequestResponseLogUtils {
 
   public static String buildRequestLog(StringBuilder body, HttpMethod requestMethod,
       URI requestURI) {
-    return String.format("\n"
-            + "----------------INCOMING REQUEST----------------\n"
-            + "URL: %s\n"
-            + "METHOD: %s\n"
-            + "BODY:\n"
-            + "%s",
+    return String.format("""
+            ----------------INCOMING REQUEST----------------
+            URL: %s
+            METHOD: %s
+            BODY:
+            %s""",
         requestURI, requestMethod, body.toString()
-    );
-  }
-
-  public static String buildResponseLog(HttpStatusCode status) {
-    return String.format("\n"
-            + "----------------INCOMING RESPONSE----------------\n"
-            + "STATUS: %s\n"
-            + "%s",
-        status.value()
     );
   }
 }
