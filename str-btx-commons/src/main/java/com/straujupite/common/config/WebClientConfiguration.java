@@ -16,13 +16,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfiguration {
     @Autowired
     private ObjectMapper objectMapper;
+  private final WebClientFilter webClientFilter = new WebClientFilter();
 
     @Value("${path.web-client-url}")
     private String url;
 
     @Bean
     public WebClient webClient(){
-        return WebClient.builder()
+      return WebClient.builder()
                         .baseUrl(url)
                         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .codecs(configurer -> {
@@ -31,6 +32,7 @@ public class WebClientConfiguration {
                           configurer.defaultCodecs()
                                     .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
                         })
-                        .build();
+                      .filter(webClientFilter.logResponse())
+                      .build();
     }
 }

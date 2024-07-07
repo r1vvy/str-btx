@@ -28,7 +28,7 @@ public class RetrieveLatestDealService {
 							 .map(this::getLatestDeal)
 							 .doOnEach(logOnNext(deal -> log.debug("Retrieved latest deal: {}", deal)))
 							 .map(context::withDealInfo)
-							 .doOnEach(logOnError(err -> log.debug("Error while retrieving latest deal info: {}",
+							 .doOnEach(logOnError(err -> log.error("Error while retrieving latest deal info: {}",
 									 err.getMessage())))
 							 .onErrorResume(err -> Mono.empty())
 							 .defaultIfEmpty(context);
