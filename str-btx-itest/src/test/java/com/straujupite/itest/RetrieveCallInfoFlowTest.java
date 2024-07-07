@@ -14,6 +14,7 @@ import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
 import com.straujupite.itest.mock.BitrixMock;
 import com.straujupite.out.adapter.BitrixAdapter;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,7 @@ public class RetrieveCallInfoFlowTest extends BaseIntegrationTest {
 
     assertNotNull(command);
 
-    var expectedResponse = new GetCompanyDealsOutResponse(List.of());
+    var expectedResponse = new GetCompanyDealsOutResponse(Collections.emptyList());
     doReturn(Mono.just(expectedResponse)).when(bitrixAdapter).retrieveDealsByCompanyId(command);
 
     StepVerifier.create(bitrixAdapter.retrieveDealsByCompanyId(command))

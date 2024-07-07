@@ -28,6 +28,7 @@ public class RequestResponseLogUtils {
   public static String buildRequestLog(StringBuilder body, HttpMethod requestMethod,
       URI requestURI) {
     return String.format("""
+                        
             ----------------INCOMING REQUEST----------------
             URL: %s
             METHOD: %s
