@@ -29,6 +29,7 @@ public class AddCommentService {
   public Mono<RetrieveCallInfoContext> addComment(RetrieveCallInfoContext context) {
     return Mono.fromSupplier(() -> findFlow(context.getRetrieveCallInfoCommand().getEventType()))
                .flatMap(eventFlow -> eventFlow.createComment(context))
+               .doOnEach(logOnNext(comment -> log.debug("Created comment: {}", comment.getValue())))
                .map(comment -> createOutCommand(context, comment))
                .doOnEach(logOnNext(cmd -> log.debug("About to call addComment: {}", cmd)))
                .flatMap(bitrixAdapter::addComment)

@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class LostCallerAddedFlowService implements AddCommentEventTypeFlow {
 
-  private static final String FLOW_TEMPLATE = "IENĀKOŠS ZVANS: ❌ Klientam neizdevās sazvanīt tālr. nr. %s (%s). %s plkst. %s";
+  private static final String FLOW_TEMPLATE = "IENĀKOŠS ZVANS: ❌ Klientam neizdevās sazvanīt tālr. nr. %s (%s). \n DATUMS UN LAIKS: %s plkst. %s";
 
   private final CommentBuilder commentBuilder;
 
@@ -29,8 +29,7 @@ public class LostCallerAddedFlowService implements AddCommentEventTypeFlow {
 
   private BtxComment buildCommentByTemplate(RetrieveCallInfoContext context) {
     return commentBuilder.buildCommentByTemplate(
-        LostCallerAddedFlowService.FLOW_TEMPLATE,
-        context.getRetrieveCallInfoCommand().getCallInfo().getLastContactDateTime(),
+        FLOW_TEMPLATE,
         context.getStrNumber(),
         context.getRetrieveCallInfoCommand().getCallInfo().getContactName()
     );
