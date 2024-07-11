@@ -34,7 +34,7 @@ public class CompanyInfoService {
                    .filter(Optional::isPresent)
                    .map(Optional::get)
                    .doOnEach(
-                       logOnNext(companyId -> log.debug("Retrieved companyId: {}", companyId)))
+                       logOnNext(companyId -> log.info("Retrieved companyId: {}", companyId)))
                    .map(context::withCompanyId);
     }
 

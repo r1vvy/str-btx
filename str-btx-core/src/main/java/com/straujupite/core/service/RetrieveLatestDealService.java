@@ -26,7 +26,7 @@ public class RetrieveLatestDealService {
 							 .map(CompanyId::new)
 							 .flatMap(bitrixAdapter::retrieveDealsByCompanyId)
 							 .map(this::getLatestDeal)
-							 .doOnEach(logOnNext(deal -> log.debug("Retrieved latest deal: {}", deal)))
+							 .doOnEach(logOnNext(deal -> log.info("Retrieved latest deal: {}", deal)))
 							 .map(context::withDealInfo)
 							 .doOnEach(logOnError(err -> log.error("Error while retrieving latest deal info: {}",
 									 err.getMessage())))

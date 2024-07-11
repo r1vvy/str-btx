@@ -28,7 +28,7 @@ public class ClientInfoService {
                    .map(ctx -> ctx.withStrNumber(
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))
                    .doOnEach(
-                       logOnNext(ctx -> log.debug("Straujupite phone number from destination: {}",
+                       logOnNext(ctx -> log.info("Straujupite phone number from destination: {}",
                            ctx.getStrNumber())))
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(ctx,
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
@@ -39,7 +39,7 @@ public class ClientInfoService {
         return Mono.justOrEmpty(context)
                    .map(ctx -> ctx.withStrNumber(
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getCaller().getValue()))
-                   .doOnEach(logOnNext(ctx -> log.debug("Straujupite phone number from caller: {}",
+                   .doOnEach(logOnNext(ctx -> log.info("Straujupite phone number from caller: {}",
                        ctx.getStrNumber())))
                    .flatMap(ctx -> companyInfoService.getCompanyIdByPhoneNumber(ctx,
                        ctx.getRetrieveCallInfoCommand().getCallInfo().getDestination().getValue()))

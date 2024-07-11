@@ -69,7 +69,7 @@ public class ClientNotAnsweredLessThanThreeTimesFlow extends ChangeDealStageFlow
     return Mono.justOrEmpty(context.getNewStage())
                .map(newStage -> buildChangeDealStageOutRequest(context, newStage))
                .doOnEach(logOnNext(
-                   outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest)))
+                   outRequest -> log.info("About to call ChangeDealStage: {}", outRequest)))
                .flatMap(bitrixAdapter::changeStage)
                .thenReturn(context)
                .defaultIfEmpty(context);

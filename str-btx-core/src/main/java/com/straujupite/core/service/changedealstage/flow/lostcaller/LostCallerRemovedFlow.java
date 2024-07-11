@@ -32,7 +32,7 @@ public class LostCallerRemovedFlow extends ChangeDealStageFlowBase implements Ch
     return Mono.fromSupplier(context.getDealInfo()::getId)
                .map(this::buildChangeDealStageOutRequest)
                .doOnEach(logOnNext(
-                   outRequest -> log.debug("About to call ChangeDealStage: {}", outRequest)))
+                   outRequest -> log.info("About to call ChangeDealStage: {}", outRequest)))
                .flatMap(bitrixAdapter::changeStage)
                .then();
   }
