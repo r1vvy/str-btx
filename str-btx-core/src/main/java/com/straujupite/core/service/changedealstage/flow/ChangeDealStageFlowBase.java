@@ -36,8 +36,6 @@ public abstract class ChangeDealStageFlowBase {
   @Autowired
   protected BitrixAdapter bitrixAdapter;
 
-
-
   protected String createDeadlineByDayCount(int daysToAdd, String currentDeadline) {
     var deadline = OffsetDateTime.parse(currentDeadline);
 
@@ -50,7 +48,7 @@ public abstract class ChangeDealStageFlowBase {
                .map(DealInfo::getId)
                .map(this::buildGetActivityOutRequest)
                .doOnEach(
-                   logOnNext(outRequest -> log.debug("About to call getActivity: {}", outRequest)))
+                   logOnNext(outRequest -> log.info("About to call getActivity: {}", outRequest)))
                .flatMap(bitrixAdapter::getActivity)
                .map(context::withActivityInfo)
                .switchIfEmpty(
@@ -65,7 +63,7 @@ public abstract class ChangeDealStageFlowBase {
                .map(
                    activityInfo -> buildUpdateActivityDeadlineRequest(context, daysToAddToDeadline))
                .doOnEach(logOnNext(
-                   outRequest -> log.debug("About to call updateActivityDeadline: {}", outRequest)))
+                   outRequest -> log.info("About to call updateActivityDeadline: {}", outRequest)))
                .flatMap(bitrixAdapter::updateActivityDeadline)
                .thenReturn(context);
   }
@@ -87,7 +85,7 @@ public abstract class ChangeDealStageFlowBase {
     return Mono.justOrEmpty(context)
                .map(ctx -> buildAddActivityOutRequest(deadline, ctx))
                .doOnEach(
-                   logOnNext(outRequest -> log.debug("About to call addActivity: {}", outRequest)))
+                   logOnNext(outRequest -> log.info("About to call addActivity: {}", outRequest)))
                .flatMap(bitrixAdapter::addActivity)
                .thenReturn(context);
   }

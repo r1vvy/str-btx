@@ -87,6 +87,6 @@ public class BitrixAdapterImpl implements BitrixAdapter {
   }
 
   private <Response> Consumer<Signal<Response>> logResponse() {
-    return logOnNext(response -> log.debug("Response from Bitrix: {}", response));
+    return logOnNext(response -> log.info("Response from Bitrix: {}", response));
   }
 }

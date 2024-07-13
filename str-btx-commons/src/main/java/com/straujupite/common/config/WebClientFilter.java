@@ -32,7 +32,7 @@ public class WebClientFilter {
 
   private Consumer<Signal<ClientResponse>> logResponse(ClientResponse response,
       String formattedBody) {
-    return logOnNext(res -> log.debug(buildResponseLog(formattedBody, response)));
+    return logOnNext(res -> log.info(buildResponseLog(formattedBody, response)));
   }
 
   private String buildResponseLog(String body, ClientResponse response) {

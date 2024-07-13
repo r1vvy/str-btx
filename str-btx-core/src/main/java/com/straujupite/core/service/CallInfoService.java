@@ -34,7 +34,7 @@ public class CallInfoService {
                .filter(ctx -> isNotIgnoredEvent(ctx.getRetrieveCallInfoCommand()))
                .flatMap(clientInfoService::getByPhoneNumber)
                .filter(ctx -> ctx.getCompanyId() != null)
-               .doOnEach(logOnNext(ctx -> log.debug("Company ID is not null, continuing flow")))
+               .doOnEach(logOnNext(ctx -> log.info("Company ID is not null, continuing flow")))
                .flatMap(addCommentService::addComment)
                .flatMap(ctx -> retrieveLatestDealService.retrieveLatestDealInfo(ctx,
                    String.valueOf(ctx.getCompanyId())))
