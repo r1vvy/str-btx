@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class LostCallerAddedFlowService implements AddCommentEventTypeFlow {
 
-  private static final String FLOW_TEMPLATE = "IENĀKOŠS ZVANS: ❌ Klientam neizdevās sazvanīt tālr. nr. %s (%s). \n DATUMS UN LAIKS: %s plkst. %s";
+  private static final String FLOW_TEMPLATE = "IENĀKOŠS ZVANS: ❌ Klientam neizdevās sazvanīt tālr. nr. %s (%s). DATUMS UN LAIKS: %s plkst. %s";
 
   private final CommentBuilder commentBuilder;
 
