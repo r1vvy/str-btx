@@ -17,8 +17,8 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CallCompletedFlowService implements AddCommentEventTypeFlow {
 
-  private static final String CALL_SUCCESSFUL_TEMPLATE = "✅ Zvans ar klientu (tālr. nr. %s) no tālr. nr. %s. pabeigts. \n DATUMS UN LAIKS: %s plkst. %s";
-  private static final String CALL_UNSUCCESSFUL_TEMPLATE = "❌ Neizdevās sazvanīt klientu (tālr. nr. %s) no tālr. nr. %s \n DATUMS UN LAIKS: %s plkst. %s";
+  private static final String CALL_SUCCESSFUL_TEMPLATE = "✅ Zvans ar klientu (tālr. nr. %s) no tālr. nr. %s. pabeigts. DATUMS UN LAIKS: %s plkst. %s";
+  private static final String CALL_UNSUCCESSFUL_TEMPLATE = "❌ Neizdevās sazvanīt klientu (tālr. nr. %s) no tālr. nr. %s DATUMS UN LAIKS: %s plkst. %s";
   private static final String OUTGOING_CALL_PREFIX = "IZEJOŠS ZVANS: ";
   private static final String INCOMING_CALL_PREFIX = "IENĀKOŠS ZVANS: ";
 
