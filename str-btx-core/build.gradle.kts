@@ -10,3 +10,9 @@ dependencies {
     implementation(project(":str-btx-commons"))
     implementation(project(":str-btx-out"))
 }
+// Since this library is included as a jar in our jib projects, we want the
+// jar to built reproducibly.
+tasks.withType<Jar> {
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
+}

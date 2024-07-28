@@ -1,22 +1,16 @@
 <configuration>
-  <include resource="org/springframework/cloud/gcp/autoconfigure/logging/logback-appender.xml"/>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <appender class="com.google.cloud.logging.logback.LoggingAppender" name="CLOUD">
+      <redirectToStdout>true</redirectToStdout>
     <encoder>
       <pattern>%d{yyyy-MM-dd HH:mm:ss} [level=%level] [thread=%thread] [traceId=%X{traceId}] %logger{36}: %msg%n</pattern>
     </encoder>
   </appender>
-  <appender class="com.google.cloud.logging.logback.LoggingAppender" name="CLOUD">
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>INFO</level>
-    </filter>
-  </appender>
-  <include resource="org/springframework/cloud/gcp/autoconfigure/logging/logback-appender.xml"/>
+
 
   <root level="info">
     <appender-ref ref="CLOUD"/>
-  </root>
-  <root level="INFO">
-    <appender-ref ref="STDOUT" />
   </root>
 
   <logger level="DEBUG" name="com.straujupite"/>
