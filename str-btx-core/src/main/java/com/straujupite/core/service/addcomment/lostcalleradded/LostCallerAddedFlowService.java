@@ -1,5 +1,6 @@
 package com.straujupite.core.service.addcomment.lostcalleradded;
 
+import com.straujupite.common.dto.common.AddCommentTemplate;
 import com.straujupite.common.dto.common.bitrix.BtxComment;
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
@@ -12,9 +13,6 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class LostCallerAddedFlowService implements AddCommentEventTypeFlow {
-
-  private static final String FLOW_TEMPLATE = "IENĀKOŠS ZVANS: ❌ Klientam neizdevās sazvanīt tālr. nr. %s (%s). DATUMS UN LAIKS: %s plkst. %s";
-
   private final CommentBuilder commentBuilder;
 
   @Override
@@ -29,9 +27,9 @@ public class LostCallerAddedFlowService implements AddCommentEventTypeFlow {
 
   private BtxComment buildCommentByTemplate(RetrieveCallInfoContext context) {
     return commentBuilder.buildCommentByTemplate(
-        FLOW_TEMPLATE,
-        context.getStrNumber(),
-        context.getRetrieveCallInfoCommand().getCallInfo().getContactName()
+            AddCommentTemplate.LOST_CALLER_ADDED,
+            context.getStrNumber(),
+            context.getRetrieveCallInfoCommand().getCallInfo().getContactName()
     );
   }
 }
