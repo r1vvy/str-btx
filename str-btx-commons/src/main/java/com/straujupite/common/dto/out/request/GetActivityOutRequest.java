@@ -9,4 +9,5 @@ public class GetActivityOutRequest {
 
   private final String ownerTypeId;
   private final String ownerId;
+  private final String authorId;
 }

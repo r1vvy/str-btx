@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 public abstract class ChangeDealStageFlowBase {
 
   protected static final String DEAL_ACTIVITY_OWNER_TYPE_ID = "2";
+  protected static final String AUTHOR_ID = "24";
   protected static final String ACTIVITY_DESCRIPTION = "Zvanīt klientam";
   protected static final DealStage NOT_ANSWERED_MORE_THAN_OR_EQUAL_TO_THREE_TIMES_STAGE = DealStage.DIDNT_PICKUP_AND_EMAIL;
   protected static final List<DealStage> COMPLETED_DEALS = List.of(
@@ -94,6 +95,7 @@ public abstract class ChangeDealStageFlowBase {
     return GetActivityOutRequest.builder()
                                 .ownerId(dealId)
                                 .ownerTypeId(DEAL_ACTIVITY_OWNER_TYPE_ID)
+                                .authorId(AUTHOR_ID)
                                 .build();
   }
 
