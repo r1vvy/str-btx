@@ -28,9 +28,11 @@ public class WebClientConfiguration {
                         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .codecs(configurer -> {
                           configurer.defaultCodecs()
-                                    .jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
+                                    .jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper,
+                                                                                 MediaType.APPLICATION_JSON));
                           configurer.defaultCodecs()
-                                    .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
+                                    .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper,
+                                                                                 MediaType.APPLICATION_JSON));
                         })
                       .filter(webClientFilter.logResponse())
                       .build();

@@ -10,6 +10,7 @@ public interface BitrixEndpoints {
   String GET_NOT_COMPLETED_ACTIVITIES = "/crm.activity.list?"
       + "filter[OWNER_TYPE_ID]=%s"
       + "&filter[OWNER_ID]=%s"
+      + "&filter[AUTHOR_ID]=%s"
       + "&filter[COMPLETED]=N";
   String UPDATE_ACTIVITY_DEADLINE = "/crm.activity.todo.updateDeadline?"
       + "ownerTypeId=%s"

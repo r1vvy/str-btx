@@ -12,7 +12,8 @@ public class GetNotCompletedActivitiesUriBuilder implements UriBuilder<GetActivi
     return String.format(
         BitrixEndpoints.GET_NOT_COMPLETED_ACTIVITIES,
         request.getOwnerTypeId(),
-        request.getOwnerId()
+        request.getOwnerId(),
+        request.getAuthorId()
     );
   }
 }
