@@ -2,10 +2,8 @@ package com.straujupite.common.util.uriformatter;
 
 import com.straujupite.common.dto.common.PhoneNumber;
 import com.straujupite.common.dto.common.bitrix.BitrixEndpoints;
-import org.springframework.stereotype.Component;
 
-@Component
-public class GetCompanyInfoByPhoneNumberUriBuilder implements UriBuilder<PhoneNumber> {
+class GetCompanyInfoByPhoneNumberUriBuilder implements UriBuilder<PhoneNumber> {
 
   @Override
   public String buildUri(PhoneNumber phoneNumber) {

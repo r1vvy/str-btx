@@ -2,10 +2,8 @@ package com.straujupite.common.util.uriformatter;
 
 import com.straujupite.common.dto.common.bitrix.BitrixEndpoints;
 import com.straujupite.common.dto.out.request.AddActivityOutRequest;
-import org.springframework.stereotype.Component;
 
-@Component
-public class AddActivityToDealUriBuilder implements UriBuilder<AddActivityOutRequest> {
+class AddActivityToDealUriBuilder implements UriBuilder<AddActivityOutRequest> {
 
   @Override
   public String buildUri(AddActivityOutRequest request) {
