@@ -2,7 +2,7 @@ package com.straujupite.core.service.changedealstage.flow.callcompleted.outgoing
 
 import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.common.callInfo.RetrieveCallInfoEventType;
-import com.straujupite.common.dto.context.RetrieveCallInfoContext;
+import com.straujupite.common.dto.context.ChangeDealStageContext;
 import com.straujupite.common.error.changedealstage.ActivityInfoNotFoundException;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlow;
 import com.straujupite.core.service.changedealstage.flow.ChangeDealStageFlowBase;
@@ -13,17 +13,16 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class ClientNotAnsweredMoreOrEqualToThreeTimes extends ChangeDealStageFlowBase implements
-    ChangeDealStageFlow {
+                                                                                      ChangeDealStageFlow {
 
   @Override
-  public boolean isSupported(RetrieveCallInfoContext context) {
-    return RetrieveCallInfoEventType.CALL_COMPLETED.equals(
-        context.getRetrieveCallInfoCommand().getEventType())
+  public boolean isSupported(ChangeDealStageContext context) {
+    return RetrieveCallInfoEventType.CALL_COMPLETED.equals(context.getEventType())
         && dealIsNotCompletedAndClientNotAnsweredMoreOrEqualToThreeTimes(context.getDealInfo());
   }
 
   @Override
-  public Mono<Void> execute(RetrieveCallInfoContext context) {
+  public Mono<Void> execute(ChangeDealStageContext context) {
     return Mono.justOrEmpty(context)
                .flatMap(this::getDealActivity)
                .flatMap(ctx -> updateActivityDeadlineIfPresent(ctx, 7))

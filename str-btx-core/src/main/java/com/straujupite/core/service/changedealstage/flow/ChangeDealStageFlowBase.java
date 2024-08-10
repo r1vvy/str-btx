@@ -2,9 +2,8 @@ package com.straujupite.core.service.changedealstage.flow;
 
 import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
 
-import com.straujupite.common.dto.DealInfo;
 import com.straujupite.common.dto.DealStage;
-import com.straujupite.common.dto.context.RetrieveCallInfoContext;
+import com.straujupite.common.dto.context.ChangeDealStageContext;
 import com.straujupite.common.dto.out.request.AddActivityOutRequest;
 import com.straujupite.common.dto.out.request.GetActivityOutRequest;
 import com.straujupite.common.dto.out.request.UpdateActivityDeadlineOutRequest;
@@ -15,7 +14,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,9 +42,8 @@ public abstract class ChangeDealStageFlowBase {
                    .format(DefaultDateTimeFormatter.FORMATTER_WITHOUT_TIMEZONE);
   }
 
-  protected Mono<RetrieveCallInfoContext> getDealActivity(RetrieveCallInfoContext context) {
-    return Mono.justOrEmpty(context.getDealInfo())
-               .map(DealInfo::getId)
+  protected Mono<ChangeDealStageContext> getDealActivity(ChangeDealStageContext context) {
+    return Mono.fromSupplier(context.getDealInfo()::getId)
                .map(this::buildGetActivityOutRequest)
                .doOnEach(
                    logOnNext(outRequest -> log.info("About to call getActivity: {}", outRequest)))
@@ -58,8 +55,8 @@ public abstract class ChangeDealStageFlowBase {
   }
 
 
-  protected Mono<RetrieveCallInfoContext> updateActivityDeadlineIfPresent(
-      RetrieveCallInfoContext context, int daysToAddToDeadline) {
+  protected Mono<ChangeDealStageContext> updateActivityDeadlineIfPresent(
+      ChangeDealStageContext context, int daysToAddToDeadline) {
     return Mono.justOrEmpty(context.getActivityInfo())
                .map(
                    activityInfo -> buildUpdateActivityDeadlineRequest(context, daysToAddToDeadline))
@@ -70,19 +67,21 @@ public abstract class ChangeDealStageFlowBase {
   }
 
   protected UpdateActivityDeadlineOutRequest buildUpdateActivityDeadlineRequest(
-      RetrieveCallInfoContext context, int daysToAddToDeadline) {
+      ChangeDealStageContext context, int daysToAddToDeadline) {
     return UpdateActivityDeadlineOutRequest.builder()
                                            .id(context.getActivityInfo().getActivityId())
                                            .ownerTypeId(DEAL_ACTIVITY_OWNER_TYPE_ID)
-                                           .ownerId(getDealId(context.getDealInfo()))
+                                           .ownerId(context.getDealInfo()
+                                                           .getId())
                                            .updatedDeadline(
                                                createDeadlineByDayCount(daysToAddToDeadline,
-                                                   context.getActivityInfo().getDeadLine())
+                                                                        context.getActivityInfo()
+                                                                               .getDeadLine())
                                            ).build();
   }
 
-  protected Mono<RetrieveCallInfoContext> addNewActivityToDeal(RetrieveCallInfoContext context,
-      int deadline) {
+  protected Mono<ChangeDealStageContext> addNewActivityToDeal(ChangeDealStageContext context,
+                                                              int deadline) {
     return Mono.justOrEmpty(context)
                .map(ctx -> buildAddActivityOutRequest(deadline, ctx))
                .doOnEach(
@@ -100,19 +99,12 @@ public abstract class ChangeDealStageFlowBase {
   }
 
   private AddActivityOutRequest buildAddActivityOutRequest(int deadline,
-      RetrieveCallInfoContext ctx) {
+                                                           ChangeDealStageContext ctx) {
     return AddActivityOutRequest.builder()
                                 .dealId(ctx.getDealInfo().getId())
                                 .description(ACTIVITY_DESCRIPTION)
                                 .deadline(createDeadlineByDayCount(deadline, getCurrentTime()))
                                 .build();
-  }
-
-  private String getDealId(DealInfo dealInfo) {
-    return Optional.ofNullable(dealInfo)
-                   .map(DealInfo::getId)
-                   .orElseThrow(
-                       () -> new RuntimeException("Couldn't retrieve DealID from DealInfo"));
   }
 
   private String getCurrentTime() {
