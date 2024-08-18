@@ -18,9 +18,6 @@ jib {
     container {
         creationTime = "USE_CURRENT_TIMESTAMP"
     }
-    to {
-        image = "europe-north1-docker.pkg.dev/straujupite-project/straujupite-api/str-btx-api:v13"
-    }
     from {
         image = "openjdk:17-jdk-slim"
     }
