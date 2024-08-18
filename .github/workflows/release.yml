@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Grant execute permission for gradlew
-        run: chmod +x demo/gradlew
+        run: chmod +x ./gradlew
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
@@ -41,10 +41,6 @@ jobs:
 
       - name: Configure Docker to use Google Artifact Registry
         run: gcloud auth configure-docker europe-north1-docker.pkg.dev
-      - name: Github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
 
       - name: Build Docker image using Jib
         env:
