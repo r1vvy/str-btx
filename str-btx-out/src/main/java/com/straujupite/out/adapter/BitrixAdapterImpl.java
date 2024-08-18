@@ -14,7 +14,7 @@ import com.straujupite.common.dto.out.response.GetActivityOutResponse;
 import com.straujupite.common.dto.out.response.GetCompanyDealsOutResponse;
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
 import com.straujupite.common.dto.out.response.UpdateActivityOutResponse;
-import com.straujupite.common.util.uriformatter.UriBuilder;
+import com.straujupite.common.util.uriformatter.UriBuilderRegistry;
 import com.straujupite.common.webclient.WebClientService;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
@@ -28,17 +28,12 @@ import reactor.core.publisher.Signal;
 @Slf4j
 public class BitrixAdapterImpl implements BitrixAdapter {
 
-  private final UriBuilder<AddActivityOutRequest> addActivityOutRequestUriBuilder;
-  private final UriBuilder<PhoneNumber> getCompanyInfoByPhoneNumberUriBruilder;
-  private final UriBuilder<GetActivityOutRequest> getNotCompletedActivitiesUriBuilder;
-  private final UriBuilder<CompanyId> getNotCompletedDealsByCompanyIdUriBuilder;
-  private final UriBuilder<UpdateActivityDeadlineOutRequest> updateActivityDeadlineUriBuilder;
-
+  private final UriBuilderRegistry uriBuilderRegistry;
   private final WebClientService webClientService;
 
   @Override
   public Mono<Void> addActivity(AddActivityOutRequest outRequest) {
-    return get(addActivityOutRequestUriBuilder, outRequest, Void.class);
+    return get(outRequest, Void.class);
   }
 
   @Override
@@ -53,35 +48,34 @@ public class BitrixAdapterImpl implements BitrixAdapter {
 
   @Override
   public Mono<GetActivityOutResponse> getActivity(GetActivityOutRequest outRequest) {
-    return get(getNotCompletedActivitiesUriBuilder, outRequest, GetActivityOutResponse.class);
+    return get(outRequest, GetActivityOutResponse.class);
   }
 
   @Override
   public Mono<GetCompanyOutResponse> retrieveCompanyIdByPhoneNumber(PhoneNumber phoneNumber) {
-    return get(getCompanyInfoByPhoneNumberUriBruilder, phoneNumber, GetCompanyOutResponse.class);
+    return get(phoneNumber, GetCompanyOutResponse.class);
   }
 
   @Override
   public Mono<GetCompanyDealsOutResponse> retrieveDealsByCompanyId(CompanyId companyId) {
-    return get(getNotCompletedDealsByCompanyIdUriBuilder, companyId,
-        GetCompanyDealsOutResponse.class);
+    return get(companyId, GetCompanyDealsOutResponse.class);
   }
 
   @Override
   public Mono<UpdateActivityOutResponse> updateActivityDeadline(
       UpdateActivityDeadlineOutRequest request) {
-    return get(updateActivityDeadlineUriBuilder, request, UpdateActivityOutResponse.class);
+    return get(request, UpdateActivityOutResponse.class);
   }
 
-  private <Request, Response> Mono<Response> get(UriBuilder<Request> builder, Request request,
-      Class<Response> responseClass) {
-    return Mono.fromCallable(() -> builder.buildUri(request))
+  private <Request, Response> Mono<Response> get(Request request, Class<Response> responseClass) {
+    return Mono.fromCallable(() -> uriBuilderRegistry.getUriBuilder(request.getClass()))
+               .map(builder -> builder.buildUri(request))
                .flatMap(uri -> webClientService.getAndReceiveMono(uri, responseClass))
                .doOnEach(logResponse());
   }
 
   private <Request, Response> Mono<Response> post(String uri, Request request,
-      Class<Response> responseClass) {
+                                                  Class<Response> responseClass) {
     return webClientService.postAndReceiveMono(uri, request, responseClass)
                            .doOnEach(logResponse());
   }
