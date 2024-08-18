@@ -45,4 +45,4 @@ jobs:
       - name: Build Docker image using Jib
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: cd demo && ./gradlew jib --image=europe-north1-docker.pkg.dev/straujupite-project/straujupite-api/str-btx-api:$RELEASE_TAG
+        run: ./gradlew jib --image=europe-north1-docker.pkg.dev/straujupite-project/straujupite-api/str-btx-api:$RELEASE_TAG
