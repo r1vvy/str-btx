@@ -1,4 +1,4 @@
-package com.straujupite.common.dto.common.bitrix;
+package com.straujupite.common.config;
 
 public interface BitrixEndpoints {
 

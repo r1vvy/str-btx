@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: "str-service"
   config:
     activate:
       on-profile: prod
@@ -15,3 +17,9 @@ server:
 
 path:
   web-client-url: "${OUTGOING_REQUEST_URL}"
+
+straujupite:
+  google:
+    integration:
+      spreadsheet-id: "${SPREADSHEET_ID}"
+      table-range: "${TABLE_RANGE}"

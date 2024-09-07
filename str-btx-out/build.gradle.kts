@@ -6,6 +6,9 @@ dependencies {
 
     implementation(libs.reactor.core)
     implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.google.api.client)
+    implementation(libs.google.api.sheets)
+    implementation(libs.google.oauth)
 
     testImplementation(libs.junitApi)
     testImplementation(libs.junitEngine)

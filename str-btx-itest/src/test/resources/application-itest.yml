@@ -1,7 +1,15 @@
 spring:
+  application:
+    name: "str-service"
   config:
     activate:
       on-profile: itest
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
 
 logging:
   level:
@@ -10,3 +18,9 @@ logging:
 
 path:
   web-client-url: http://localhost:1337/
+
+straujupite:
+  google:
+    integration:
+      spreadsheet-id: "spreadsheet-id"
+      table-range: "!Table"
