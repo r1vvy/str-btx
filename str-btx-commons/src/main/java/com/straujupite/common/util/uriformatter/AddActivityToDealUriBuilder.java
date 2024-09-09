@@ -1,6 +1,6 @@
 package com.straujupite.common.util.uriformatter;
 
-import com.straujupite.common.dto.common.bitrix.BitrixEndpoints;
+import com.straujupite.common.config.BitrixEndpoints;
 import com.straujupite.common.dto.out.request.AddActivityOutRequest;
 
 class AddActivityToDealUriBuilder implements UriBuilder<AddActivityOutRequest> {

@@ -1,7 +1,7 @@
 package com.straujupite.common.util.uriformatter;
 
+import com.straujupite.common.config.BitrixEndpoints;
 import com.straujupite.common.dto.common.PhoneNumber;
-import com.straujupite.common.dto.common.bitrix.BitrixEndpoints;
 
 class GetCompanyInfoByPhoneNumberUriBuilder implements UriBuilder<PhoneNumber> {
 

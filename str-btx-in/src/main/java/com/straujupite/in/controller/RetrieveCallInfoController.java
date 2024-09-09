@@ -1,8 +1,6 @@
 package com.straujupite.in.controller;
 
 
-import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
-
 import com.straujupite.common.dto.context.RetrieveCallInfoContext;
 import com.straujupite.common.dto.in.command.RetrieveCallInfoCommand;
 import com.straujupite.core.service.CallInfoService;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
+
 @RestController
 @RequestMapping(PathConfiguration.RETRIEVE_CALL_INFO)
 @RequiredArgsConstructor
@@ -26,8 +26,7 @@ public class RetrieveCallInfoController {
   private final CallInfoService callInfoService;
 
   @PostMapping
-  public Mono<ResponseEntity<Void>> retrieveCallInfo(
-      @RequestBody @Valid RetrieveCallInfoCommand command) {
+  public Mono<ResponseEntity<Void>> retrieveCallInfo(@RequestBody @Valid RetrieveCallInfoCommand command) {
     return Mono.just(command)
                .doOnEach(logOnNext(cmd -> log.info("Received command: {}", cmd)))
                .map(this::createContextFromCommand)

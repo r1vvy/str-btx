@@ -16,7 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfiguration {
     @Autowired
     private ObjectMapper objectMapper;
-  private final WebClientFilter webClientFilter = new WebClientFilter();
+    private final WebClientFilter webClientFilter = new WebClientFilter();
 
     @Value("${path.web-client-url}")
     private String url;
