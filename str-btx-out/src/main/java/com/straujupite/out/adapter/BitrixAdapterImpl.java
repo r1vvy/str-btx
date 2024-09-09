@@ -1,9 +1,7 @@
 package com.straujupite.out.adapter;
 
-import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
-
+import com.straujupite.common.config.BitrixEndpoints;
 import com.straujupite.common.dto.common.PhoneNumber;
-import com.straujupite.common.dto.common.bitrix.BitrixEndpoints;
 import com.straujupite.common.dto.common.bitrix.CompanyId;
 import com.straujupite.common.dto.out.command.AddCommentOutCommand;
 import com.straujupite.common.dto.out.request.AddActivityOutRequest;
@@ -16,12 +14,15 @@ import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
 import com.straujupite.common.dto.out.response.UpdateActivityOutResponse;
 import com.straujupite.common.util.uriformatter.UriBuilderRegistry;
 import com.straujupite.common.webclient.WebClientService;
-import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
+
+import java.util.function.Consumer;
+
+import static com.straujupite.common.util.ReactorMdcUtil.logOnNext;
 
 @Service
 @RequiredArgsConstructor

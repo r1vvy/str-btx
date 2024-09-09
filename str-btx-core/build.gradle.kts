@@ -7,6 +7,7 @@ dependencies {
     implementation(libs.reactor.core)
 
     implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.google.api.sheets)
     implementation(project(":str-btx-commons"))
     implementation(project(":str-btx-out"))
 }
