@@ -28,7 +28,7 @@ public class AddDiscountCardController {
     public Mono<ResponseEntity<Void>> addDiscountCard(@Valid @RequestBody AddDiscountCardCommand command) {
         return Mono.just(command)
                    .doOnEach(logOnNext(cmd -> log.info("Received command: {}", cmd)))
-//               .flatMap(service::addDiscountCard)
+                   .flatMap(service::addDiscountCard)
                    .thenReturn(ResponseEntity.ok().build());
     }
 }

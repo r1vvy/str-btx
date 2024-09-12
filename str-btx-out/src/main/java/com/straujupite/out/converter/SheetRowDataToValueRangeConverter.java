@@ -22,27 +22,26 @@ public class SheetRowDataToValueRangeConverter implements ReactiveConverter<Shee
         return Mono.justOrEmpty(source)
                    .map(src -> {
                        var values = new ArrayList<>();
-                       appendIfNotNull(values, source.getRequesterType());
-                       appendIfNotNull(values, source.getRequesterName());
-                       appendIfNotNull(values, source.getRequesterSurname());
-                       appendIfNotNull(values, source.getOrgName());
-                       appendIfNotNull(values, source.getOrgRegistrationNum());
-                       appendIfNotNull(values, source.getRequesterPhone());
-                       appendIfNotNull(values, source.getJurAddress());
-                       appendIfNotNull(values, source.getDeliveryAddress());
-                       appendIfNotNull(values, source.getPostalIndex());
-                       appendIfNotNull(values, source.getCardCount());
-                       appendIfNotNull(values, source.isSent());
+                       addValue(values, source.getRequesterType());
+                       addValue(values, source.getRequesterName());
+                       addValue(values, source.getRequesterSurname());
+                       addValue(values, source.getOrgName());
+                       addValue(values, source.getOrgRegistrationNum());
+                       addValue(values, source.getRequesterEmail());
+                       addValue(values, source.getRequesterPhone());
+                       addValue(values, source.getJurAddress());
+                       addValue(values, source.getDeliveryAddress());
+                       addValue(values, source.getPostalIndex());
+                       addValue(values, source.getCardCount());
+                       addValue(values, source.isSent());
 
                        return values;
                    })
                    .map(this::buildValueRange);
     }
 
-    private void appendIfNotNull(List<Object> list, Object source) {
-        if (source != null) {
-            list.add(source);
-        }
+    private boolean addValue(ArrayList<Object> values, Object source) {
+        return values.add(source);
     }
 
     private ValueRange buildValueRange(List<Object> objectList) {
