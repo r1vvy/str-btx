@@ -1,0 +1,11 @@
+{
+  "spreadsheetId": "spreadsheet-id",
+  "tableRange": "range!A1:L1",
+  "updates": {
+    "spreadsheetId": "spreadsheet-id",
+    "updatedRange": "range!A2:L2",
+    "updatedRows": 1,
+    "updatedColumns": 12,
+    "updatedCells": 12
+  }
+}

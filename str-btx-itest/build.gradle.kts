@@ -13,6 +13,9 @@ dependencies {
     testImplementation(libs.jsonassert)
     testImplementation(libs.wiremock)
     testImplementation(libs.reactor.test)
+    testImplementation(libs.google.api.client)
+    testImplementation(libs.google.api.sheets)
+    testImplementation(libs.google.oauth)
 
     testImplementation(libs.junitEngine)
     testRuntimeOnly(libs.junitEngine)

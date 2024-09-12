@@ -7,6 +7,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +22,7 @@ public class GoogleSheetsConfig {
     private String applicationName;
 
     @Bean
+    @ConditionalOnMissingBean(name = "sheetsOutClient")
     public Sheets sheetsOutClient() throws IOException, GeneralSecurityException {
         var credentials = GoogleCredentials.getApplicationDefault()
                                            .createScoped(SheetsScopes.SPREADSHEETS);

@@ -1,14 +1,7 @@
 {
-  "request": {
-    "method": "POST",
-    "url": "/crm.timeline.comment.add",
-    "bodyPatterns": [
-      {
-        "matchesJsonPath": "$.fields.ENTITY_ID"
-      },
-      {
-        "matchesJsonPath": "$.fields.ENTITY_TYPE"
-      }
-    ]
+  "fields": {
+    "ENTITY_ID": 1234,
+    "ENTITY_TYPE": "company",
+    "COMMENT": "IZEJOŠS ZVANS: ❌ Neizdevās sazvanīt klientu (tālr. nr. 12345678) no tālr. nr. 87654321 DATUMS UN LAIKS: 11-09-2024 plkst. 14:31:44"
   }
 }

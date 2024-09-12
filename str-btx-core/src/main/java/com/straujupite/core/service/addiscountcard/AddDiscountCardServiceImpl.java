@@ -40,13 +40,13 @@ public class AddDiscountCardServiceImpl implements AddDiscountCardService {
                            .isSent(IS_SENT_DEFAULT_VALUE)
                            .jurAddress(unwrap(command.getLegalAddress()))
                            .orgName(unwrap(command.getOrganizationName()))
-                           .orgRegistrationNum(unwrap(command.getOrganizationName()))
+                           .orgRegistrationNum(unwrap(command.getOrganizationRegistrationNumber()))
                            .postalIndex(command.getPostalCode().getValue())
                            .requesterEmail(command.getRequesterEmail().getValue())
                            .requesterPhone(command.getRequesterPhone().getValue())
                            .requesterType(command.getRequesterType().name())
-                           .requesterName(command.getRequesterName().getValue())
-                           .requesterSurname(command.getRequesterSurname().getValue())
+                           .requesterName(unwrap(command.getRequesterName()))
+                           .requesterSurname(unwrap(command.getRequesterSurname()))
                            .build();
     }
 
