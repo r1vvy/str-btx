@@ -33,7 +33,6 @@ public class SheetRowDataToValueRangeConverter implements ReactiveConverter<Shee
                        addValue(values, source.getDeliveryAddress());
                        addValue(values, source.getPostalIndex());
                        addValue(values, source.getCardCount());
-                       addValue(values, source.isSent());
 
                        return values;
                    })

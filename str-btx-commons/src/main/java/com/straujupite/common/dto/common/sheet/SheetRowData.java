@@ -28,6 +28,4 @@ public class SheetRowData {
     private String postalIndex;
 
     private Integer cardCount;
-
-    private boolean isSent;
 }

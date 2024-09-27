@@ -40,7 +40,7 @@ public class SheetsOutAdapterImpl implements SheetsOutAdapter {
     private Mono<AppendValuesResponse> callSheetsClient(AppendSheetCommand command, ValueRange range) {
         return Mono.just(sheetsOutClient.spreadsheets().values())
                    .map(values -> buildRequest(command, range, values))
-                   .doOnEach(logOnNext(request -> log.debug("About to call append sheet to Sheet ID: {}, Table range: {}, Data: {}", request.getSpreadsheetId(), request.getRange())))
+                   .doOnEach(logOnNext(request -> log.debug("About to call append sheet to Sheet ID: {}, Data: {}", request.getSpreadsheetId(), request.getRange())))
                    .flatMap(this::execute);
     }
 

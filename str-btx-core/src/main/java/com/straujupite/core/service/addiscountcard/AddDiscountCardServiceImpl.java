@@ -16,12 +16,12 @@ import static com.straujupite.common.util.SingleFieldUnwrapper.unwrap;
 @RequiredArgsConstructor
 public class AddDiscountCardServiceImpl implements AddDiscountCardService {
 
-    private static final boolean IS_SENT_DEFAULT_VALUE = false;
-    private final SheetsService sheetsService;
     @Value("${straujupite.google.integration.spreadsheet-id}")
     private String spreadsheetId;
     @Value("${straujupite.google.integration.table-range}")
     private String tableRange;
+
+    private final SheetsService sheetsService;
 
     @Override
     public Mono<AddDiscountCardResult> addDiscountCard(AddDiscountCardCommand command) {
@@ -37,7 +37,6 @@ public class AddDiscountCardServiceImpl implements AddDiscountCardService {
         return SheetRowData.builder()
                            .cardCount(unwrap(command.getCardCount()))
                            .deliveryAddress(command.getDeliveryAddress().getValue())
-                           .isSent(IS_SENT_DEFAULT_VALUE)
                            .jurAddress(unwrap(command.getLegalAddress()))
                            .orgName(unwrap(command.getOrganizationName()))
                            .orgRegistrationNum(unwrap(command.getOrganizationRegistrationNumber()))
