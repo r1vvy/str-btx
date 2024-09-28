@@ -1,8 +1,5 @@
 package com.straujupite.itest;
 
-import static com.github.tomakehurst.wiremock.common.ContentTypes.APPLICATION_JSON;
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-
 import com.straujupite.itest.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +8,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import static com.github.tomakehurst.wiremock.common.ContentTypes.APPLICATION_JSON;
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 
 @SpringBootTest(
     webEnvironment = WebEnvironment.RANDOM_PORT,
@@ -50,4 +50,8 @@ public abstract class BaseIntegrationTest {
                    .expectBody()
                    .isEmpty();
   }
+
+    private static void setGoogleCredentialsSystemProperty() {
+        System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", "");
+    }
 }

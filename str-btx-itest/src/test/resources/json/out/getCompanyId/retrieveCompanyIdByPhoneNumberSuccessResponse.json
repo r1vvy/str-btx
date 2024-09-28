@@ -1,25 +1,17 @@
 {
-  "response": {
-    "status": 200,
-    "headers": {
-      "Content-Type": "application/json"
-    },
-    "jsonBody": {
-      "result": {
-        "COMPANY": [
-          1234
-        ]
-      },
-      "time": {
-        "start": 1720004214.674953,
-        "finish": 1720004214.7021129,
-        "duration": 0.027159929275512695,
-        "processing": 0.0025670528411865234,
-        "date_start": "2024-07-03T13:56:54+03:00",
-        "date_finish": "2024-07-03T13:56:54+03:00",
-        "operating_reset_at": 1720004814,
-        "operating": 0
-      }
-    }
+  "result": {
+    "COMPANY": [
+      1234
+    ]
+  },
+  "time": {
+    "start": 1720004214.674953,
+    "finish": 1720004214.7021129,
+    "duration": 0.027159929275512695,
+    "processing": 0.0025670528411865234,
+    "date_start": "2024-07-03T13:56:54+03:00",
+    "date_finish": "2024-07-03T13:56:54+03:00",
+    "operating_reset_at": 1720004814,
+    "operating": 0
   }
 }

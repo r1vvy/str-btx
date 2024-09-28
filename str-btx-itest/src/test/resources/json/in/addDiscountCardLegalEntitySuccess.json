@@ -1,0 +1,11 @@
+{
+  "requesterType": "LEGAL_ENTITY",
+  "requesterEmail": "test@test.com",
+  "requesterPhone": "12445678",
+  "organizationName": "Uznemuma nosaukums",
+  "organizationRegistrationNumber": "12345678",
+  "legalAddress": "Juridiska adrese",
+  "deliveryAddress": "Ventspils, Kaut kāda iela, 5",
+  "postalCode": "LV-3601",
+  "cardCount": 100000
+}

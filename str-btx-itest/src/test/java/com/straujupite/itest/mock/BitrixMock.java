@@ -5,20 +5,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class BitrixMock extends BaseMock {
 
-  private static final String OUTGOING_JSON_PATH = "/json/out";
-
-  public void stubGetCompanyIdByPhoneNumber(String requestFileName, String responseFileName) {
-    stub(OUTGOING_JSON_PATH + "/getCompanyId/" + requestFileName,
+  public void stubGetCompanyIdByPhoneNumber(String responseFileName) {
+    stubGet("/crm.duplicate.findbycomm.json",
+            200,
         OUTGOING_JSON_PATH + "/getCompanyId/" + responseFileName);
   }
 
   public void stubAddComment(String requestFileName, String responseFileName) {
-    stubMore(OUTGOING_JSON_PATH + "/addComment/" + requestFileName,
-        OUTGOING_JSON_PATH + "/addComment/" + responseFileName);
+    stubPost("/crm.timeline.comment.add",
+            200,
+            OUTGOING_JSON_PATH + "/addComment/" + requestFileName,
+            OUTGOING_JSON_PATH + "/addComment/" + responseFileName
+    );
   }
 
-  public void stubGetLatestDealByCompanyId(String requestFileName, String responseFileName) {
-    stubMore(OUTGOING_JSON_PATH + "/getLatestDeal/" + requestFileName,
-        OUTGOING_JSON_PATH + "/getLatestDeal/" + responseFileName);
+  public void stubGetLatestDealByCompanyId(String responseFileName) {
+    stubGet("/crm.deal.list.json",
+            200,
+            OUTGOING_JSON_PATH + "/getLatestDeal/" + responseFileName);
   }
 }

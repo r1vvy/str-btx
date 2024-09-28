@@ -1,18 +1,10 @@
 package com.straujupite.itest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-
 import com.straujupite.common.dto.common.PhoneNumber;
 import com.straujupite.common.dto.out.command.AddCommentOutCommand;
 import com.straujupite.common.dto.out.response.GetCompanyOutResponse;
 import com.straujupite.itest.mock.BitrixMock;
 import com.straujupite.out.adapter.BitrixAdapter;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -21,10 +13,20 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 public class RetrieveCallInfoFlowTest extends BaseIntegrationTest {
 
   @SpyBean
   BitrixAdapter bitrixAdapter;
+
   @Autowired
   private BitrixMock bitrixMock;
 
@@ -35,11 +37,9 @@ public class RetrieveCallInfoFlowTest extends BaseIntegrationTest {
 
   @Test
   public void shouldAddCommentToCompany_WithoutLatestDeal_Flow() {
-    bitrixMock.stubGetCompanyIdByPhoneNumber("/retrieveCompanyIdByPhoneNumberSuccessRequest.json",
-        "/retrieveCompanyIdByPhoneNumberSuccessResponse.json");
+    bitrixMock.stubGetCompanyIdByPhoneNumber("/retrieveCompanyIdByPhoneNumberSuccessResponse.json");
     bitrixMock.stubAddComment("/addCommentSuccessRequest.json", "/addCommentSuccessResponse.json");
-    bitrixMock.stubGetLatestDealByCompanyId("/getLatestDealByCompanyIdSuccessRequest.json",
-        "/getLatestDealByCompanyIdSuccessNoDealResponse.json");
+    bitrixMock.stubGetLatestDealByCompanyId("/getLatestDealByCompanyIdSuccessNoDealResponse.json");
     var request = getJson("/in/retrieveCallInfoNoDealCompanySuccessRequest.json");
 
     retrieveCallInfo(request);

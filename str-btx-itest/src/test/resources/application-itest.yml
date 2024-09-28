@@ -4,6 +4,8 @@ spring:
   config:
     activate:
       on-profile: itest
+  main:
+    allow-bean-definition-overriding: true
 
 server:
   servlet:
@@ -23,4 +25,4 @@ straujupite:
   google:
     integration:
       spreadsheet-id: "spreadsheet-id"
-      table-range: "!Table"
+      table-range: "table-range"
