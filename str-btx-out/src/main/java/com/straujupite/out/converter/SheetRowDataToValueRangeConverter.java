@@ -40,7 +40,7 @@ public class SheetRowDataToValueRangeConverter implements ReactiveConverter<Shee
     }
 
     private boolean addValue(ArrayList<Object> values, Object source) {
-        return values.add(source);
+        return source != null ? values.add(source) : values.add("");
     }
 
     private ValueRange buildValueRange(List<Object> objectList) {
