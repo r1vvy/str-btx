@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class PostalCode implements SingleFieldObject<String> {
 
-    @Pattern(regexp = "^LV-\\d{4}$")
+    //@Pattern(regexp = "^LV-\\d{4}$")
     private final String value;
 
 }
